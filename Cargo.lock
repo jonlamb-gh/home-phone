@@ -95,14 +95,24 @@ dependencies = [
  "cortex-m 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "cortex-m-rt 0.6.10 (registry+https://github.com/rust-lang/crates.io-index)",
  "cortex-m-semihosting 0.3.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "nucleo-f767zi 0.1.0",
  "panic-halt 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "stm32f767-hal 0.1.0",
 ]
 
 [[package]]
 name = "nb"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "nucleo-f767zi"
+version = "0.1.0"
+dependencies = [
+ "cast 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "embedded-hal 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "nb 0.1.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "stm32f767-hal 0.1.0",
+]
 
 [[package]]
 name = "panic-halt"

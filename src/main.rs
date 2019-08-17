@@ -8,10 +8,8 @@ extern crate panic_halt; // you can put a breakpoint on `rust_begin_unwind` to c
                          // extern crate panic_semihosting; // logs messages to the host stderr;
                          // requires a debugger
 
-use stm32f767_hal as hal;
-
 use cortex_m_rt::entry;
-use crate::hal::stm32f7x7;
+use nucleo_f767zi::hal::stm32f7x7;
 
 #[entry]
 fn main() -> ! {
