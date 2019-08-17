@@ -5,16 +5,20 @@ readme = "README.md"
 name = "home-phone"
 version = "0.1.0"
 
+[[bin]]
+name = "home-phone"
+test = false
+bench = false
+
 [dependencies]
 cortex-m = "0.6.0"
 cortex-m-rt = "0.6.10"
 cortex-m-semihosting = "0.3.3"
 panic-halt = "0.2.0"
 
-[[bin]]
-name = "home-phone"
-test = false
-bench = false
+[dependencies.stm32f7]
+version = "0.8.0"
+features = ["stm32f7x2", "rt"]
 
 [profile.release]
 codegen-units = 1 # better optimizations

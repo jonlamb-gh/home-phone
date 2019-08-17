@@ -8,12 +8,14 @@ extern crate panic_halt; // you can put a breakpoint on `rust_begin_unwind` to c
                          // extern crate panic_semihosting; // logs messages to the host stderr;
                          // requires a debugger
 
-use cortex_m::asm;
 use cortex_m_rt::entry;
+use stm32f7::stm32f7x2;
 
 #[entry]
 fn main() -> ! {
-    asm::nop(); // To not have main optimize to abort in release mode, remove when you add code
+    let peripherals = stm32f7x2::Peripherals::take().unwrap();
+
+    let _gpioa = &peripherals.GPIOA;
 
     loop {
         // your code goes here
