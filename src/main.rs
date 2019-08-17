@@ -8,12 +8,14 @@ extern crate panic_halt; // you can put a breakpoint on `rust_begin_unwind` to c
                          // extern crate panic_semihosting; // logs messages to the host stderr;
                          // requires a debugger
 
+use stm32f767_hal as hal;
+
 use cortex_m_rt::entry;
-use stm32f7::stm32f7x2;
+use crate::hal::stm32f7x7;
 
 #[entry]
 fn main() -> ! {
-    let peripherals = stm32f7x2::Peripherals::take().unwrap();
+    let peripherals = stm32f7x7::Peripherals::take().unwrap();
 
     let _gpioa = &peripherals.GPIOA;
 
