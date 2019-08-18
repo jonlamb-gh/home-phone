@@ -40,6 +40,14 @@ pub struct PushPull;
 /// Open drain output (type state)
 pub struct OpenDrain;
 
+/// GPIO Pin speed selection
+pub enum Speed {
+    Low = 0,
+    Medium = 1,
+    High = 2,
+    VeryHigh = 3,
+}
+
 /// Alternate function 0 (type state)
 pub struct AF0;
 
@@ -102,8 +110,8 @@ macro_rules! gpio {
 
             use crate::rcc::AHB1;
             use super::{
-                AF4, AF5, AF6, AF7, AF9, Analog, Floating, GpioExt, Input, OpenDrain, Output,
-                PullDown, PullUp, PushPull,
+                AF4, AF5, AF6, AF7, AF9, AF11, Analog, Floating, GpioExt, Input, OpenDrain, Output,
+                PullDown, PullUp, PushPull, Speed,
             };
 
             /// GPIO parts
@@ -356,6 +364,30 @@ macro_rules! gpio {
                         $PXi { _mode: PhantomData }
                     }
 
+                    /// Configures the pin to serve as alternate function 11 (AF11)
+                    pub fn into_af11(
+                        self,
+                        moder: &mut MODER,
+                        afr: &mut $AFR,
+                    ) -> $PXi<AF11> {
+                        let offset = 2 * $i;
+
+                        // alternate function mode
+                        let mode = 0b10;
+                        moder.moder().modify(|r, w| unsafe {
+                            w.bits((r.bits() & !(0b11 << offset)) | (mode << offset))
+                        });
+
+                        let af = 11;
+                        let offset = 4 * ($i % 8);
+
+                        afr.afr().modify(|r, w| unsafe {
+                            w.bits((r.bits() & !(0b1111 << offset)) | (af << offset))
+                        });
+
+                        $PXi { _mode: PhantomData }
+                    }
+
                     /// Configures the pin to operate as a floating input pin
                     pub fn into_floating_input(
                         self,
@@ -515,6 +547,21 @@ macro_rules! gpio {
                     }
                 }
 
+                impl<MODE> $PXi<Output<MODE>> {
+                    /// Set pin speed
+                    pub fn set_speed(self, speed: Speed) -> Self {
+                        let offset = 2 * $i;
+
+                        unsafe {
+                            &(*$GPIOX::ptr()).ospeedr.modify(|r, w| {
+                                w.bits((r.bits() & !(0b11 << offset)) | ((speed as u32) << offset))
+                            })
+                        };
+
+                        self
+                    }
+                }
+
                 impl<MODE> OutputPin for $PXi<Output<MODE>> {
                     type Error = Void;
                     fn set_high(&mut self) -> Result<(), Self::Error> {
@@ -550,6 +597,22 @@ macro_rules! gpio {
                     fn is_low(&self) -> Result<bool, Self::Error> {
                         // NOTE(unsafe) atomic read with no side effects
                         Ok(unsafe { (*$GPIOX::ptr()).idr.read().bits() & (1 << $i) == 0 })
+                    }
+                }
+
+                // TODO - redo Alternate trait/pattern
+                impl $PXi<AF11> {
+                    /// Set pin speed
+                    pub fn set_speed(self, speed: Speed) -> Self {
+                        let offset = 2 * $i;
+
+                        unsafe {
+                            &(*$GPIOX::ptr()).ospeedr.modify(|r, w| {
+                                w.bits((r.bits() & !(0b11 << offset)) | ((speed as u32) << offset))
+                            })
+                        };
+
+                        self
                     }
                 }
             )+
