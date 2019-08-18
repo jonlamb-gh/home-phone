@@ -20,6 +20,11 @@ panic-halt = "0.2.0"
 features = ["rt"]
 path = "nucleo-f767zi"
 
+[dependencies.stm32-eth]
+git = "https://github.com/jonlamb-gh/stm32-eth.git"
+branch = "stm32f767-prototype"
+features = ["nucleo-f767zi", "smoltcp-phy"]
+
 [build-dependencies]
 built = "0.3.1"
 
