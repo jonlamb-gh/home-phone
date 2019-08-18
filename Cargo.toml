@@ -11,10 +11,16 @@ test = false
 bench = false
 
 [dependencies]
-cortex-m = "0.6.0"
-cortex-m-rt = "0.6.10"
 cortex-m-semihosting = "0.3.3"
 panic-halt = "0.2.0"
+
+[dependencies.cortex-m]
+version = "0.6.0"
+features = ["const-fn"]
+
+[dependencies.cortex-m-rt]
+version = "0.6.10"
+features = ["device"]
 
 [dependencies.nucleo-f767zi]
 features = ["rt"]
@@ -24,6 +30,14 @@ path = "nucleo-f767zi"
 git = "https://github.com/jonlamb-gh/stm32-eth.git"
 branch = "stm32f767-prototype"
 features = ["nucleo-f767zi", "smoltcp-phy"]
+
+[dependencies.log]
+version = "0.4"
+
+[dependencies.smoltcp]
+git = "https://github.com/m-labs/smoltcp"
+default-features = false
+features = ["proto-ipv4", "socket-icmp", "socket-udp", "socket-tcp", "log", "verbose"]
 
 [build-dependencies]
 built = "0.3.1"

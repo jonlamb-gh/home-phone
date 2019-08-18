@@ -157,8 +157,10 @@ dependencies = [
  "cortex-m 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "cortex-m-rt 0.6.10 (registry+https://github.com/rust-lang/crates.io-index)",
  "cortex-m-semihosting 0.3.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "log 0.4.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "nucleo-f767zi 0.1.0",
  "panic-halt 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "smoltcp 0.5.0 (git+https://github.com/m-labs/smoltcp)",
  "stm32-eth 0.1.1 (git+https://github.com/jonlamb-gh/stm32-eth.git?branch=stm32f767-prototype)",
 ]
 
@@ -384,7 +386,7 @@ dependencies = [
 [[package]]
 name = "stm32f767-hal"
 version = "0.1.0"
-source = "git+https://github.com/jonlamb-gh/home-phone.git#2b10ca5dd0bb4c7e6b2dc465c333247632dbd93c"
+source = "git+https://github.com/jonlamb-gh/home-phone.git#487c2145d869e81aeb7c2fcd658d3f12eec1e5c6"
 dependencies = [
  "cast 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "cortex-m 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
