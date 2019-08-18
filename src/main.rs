@@ -8,6 +8,8 @@ extern crate panic_halt; // you can put a breakpoint on `rust_begin_unwind` to c
                          // extern crate panic_semihosting; // logs messages to the host stderr;
                          // requires a debugger
 
+mod board_info;
+
 use core::fmt::Write;
 use cortex_m_rt::entry;
 use nucleo_f767zi::debug_console::DebugConsole;
@@ -16,6 +18,12 @@ use nucleo_f767zi::hal::serial::Serial;
 use nucleo_f767zi::hal::stm32f7x7;
 use nucleo_f767zi::hal::timer::Timer;
 use nucleo_f767zi::led::{Color, Leds};
+
+// Pull in build information (from `built` crate)
+mod build_info {
+    #![allow(dead_code)]
+    include!(concat!(env!("OUT_DIR"), "/built.rs"));
+}
 
 #[entry]
 fn main() -> ! {
@@ -72,7 +80,8 @@ fn main() -> ! {
 
     let mut timer = Timer::tim2(peripherals.TIM2, 1.hz(), clocks, &mut rcc.apb1);
 
-    writeln!(debug_console, "Board initialized").ok();
+    writeln!(debug_console, "Board Initialized").ok();
+    board_info::build_info(&mut debug_console);
 
     leds[Color::Green].toggle();
 
