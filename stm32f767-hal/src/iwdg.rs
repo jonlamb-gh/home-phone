@@ -65,9 +65,10 @@ impl Iwdg<IWDG> {
             .write(|w| unsafe { w.key().bits(KEY_WRITE_ACCESS_ENABLE) });
 
         // set the prescaler and reload values
-        iwdg.pr.write(|w| w.pr().bits(u8::from(config.prescaler)));
+        iwdg.pr
+            .write(|w| unsafe { w.pr().bits(u8::from(config.prescaler)) });
         iwdg.rlr
-            .write(|w| w.rl().bits(config.reload & DEFAULT_RELOAD_VALUE));
+            .write(|w| unsafe { w.rl().bits(config.reload & DEFAULT_RELOAD_VALUE) });
 
         // TODO - timeout
         // wait for completion

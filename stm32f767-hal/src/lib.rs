@@ -5,6 +5,7 @@
 //#![allow(dead_code)]
 
 extern crate embedded_hal as hal;
+pub extern crate oxcc_stm32f767 as stm32f7;
 
 pub use stm32f7::stm32f7x7;
 

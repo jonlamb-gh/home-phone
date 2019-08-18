@@ -599,24 +599,24 @@ gpio!(GPIOB, gpiob, gpiob, gpioben, gpiobrst, PBx, [
     PB15: (pb15, 15, Input<Floating>, AFRH),
 ]);
 
-// gpio!(GPIOC, gpioc, gpioc, gpiocen, gpiocrst, PCx, [
-//    PC0: (pc0, 0, Input<Floating>, AFRL),
-//    PC1: (pc1, 1, Input<Floating>, AFRL),
-//    PC2: (pc2, 2, Input<Floating>, AFRL),
-//    PC3: (pc3, 3, Input<Floating>, AFRL),
-//    PC4: (pc4, 4, Input<Floating>, AFRL),
-//    PC5: (pc5, 5, Input<Floating>, AFRL),
-//    PC6: (pc6, 6, Input<Floating>, AFRL),
-//    PC7: (pc7, 7, Input<Floating>, AFRL),
-//    PC8: (pc8, 8, Input<Floating>, AFRH),
-//    PC9: (pc9, 9, Input<Floating>, AFRH),
-//    PC10: (pc10, 10, Input<Floating>, AFRH),
-//    PC11: (pc11, 11, Input<Floating>, AFRH),
-//    PC12: (pc12, 12, Input<Floating>, AFRH),
-//    PC13: (pc13, 13, Input<Floating>, AFRH),
-//    PC14: (pc14, 14, Input<Floating>, AFRH),
-//    PC15: (pc15, 15, Input<Floating>, AFRH),
-//]);
+gpio!(GPIOC, gpioc, gpioc, gpiocen, gpiocrst, PCx, [
+    PC0: (pc0, 0, Input<Floating>, AFRL),
+    PC1: (pc1, 1, Input<Floating>, AFRL),
+    PC2: (pc2, 2, Input<Floating>, AFRL),
+    PC3: (pc3, 3, Input<Floating>, AFRL),
+    PC4: (pc4, 4, Input<Floating>, AFRL),
+    PC5: (pc5, 5, Input<Floating>, AFRL),
+    PC6: (pc6, 6, Input<Floating>, AFRL),
+    PC7: (pc7, 7, Input<Floating>, AFRL),
+    PC8: (pc8, 8, Input<Floating>, AFRH),
+    PC9: (pc9, 9, Input<Floating>, AFRH),
+    PC10: (pc10, 10, Input<Floating>, AFRH),
+    PC11: (pc11, 11, Input<Floating>, AFRH),
+    PC12: (pc12, 12, Input<Floating>, AFRH),
+    PC13: (pc13, 13, Input<Floating>, AFRH),
+    PC14: (pc14, 14, Input<Floating>, AFRH),
+    PC15: (pc15, 15, Input<Floating>, AFRH),
+]);
 
 gpio!(GPIOD, gpiod, gpiod, gpioden, gpiodrst, PDx, [
     PD0: (pd0, 0, Input<Floating>, AFRL),
@@ -637,32 +637,32 @@ gpio!(GPIOD, gpiod, gpiod, gpioden, gpiodrst, PDx, [
     PD15: (pd15, 15, Input<Floating>, AFRH),
 ]);
 
-// gpio!(GPIOE, gpioe, gpioe, gpioeen, gpioerst, PEx, [
-//    PE0: (pe0, 0, Input<Floating>, AFRL),
-//    PE1: (pe1, 1, Input<Floating>, AFRL),
-//    PE2: (pe2, 2, Input<Floating>, AFRL),
-//    PE3: (pe3, 3, Input<Floating>, AFRL),
-//    PE4: (pe4, 4, Input<Floating>, AFRL),
-//    PE5: (pe5, 5, Input<Floating>, AFRL),
-//    PE6: (pe6, 6, Input<Floating>, AFRL),
-//    PE7: (pe7, 7, Input<Floating>, AFRL),
-//    PE8: (pe8, 8, Input<Floating>, AFRH),
-//    PE9: (pe9, 9, Input<Floating>, AFRH),
-//    PE10: (pe10, 10, Input<Floating>, AFRH),
-//    PE11: (pe11, 11, Input<Floating>, AFRH),
-//    PE12: (pe12, 12, Input<Floating>, AFRH),
-//    PE13: (pe13, 13, Input<Floating>, AFRH),
-//    PE14: (pe14, 14, Input<Floating>, AFRH),
-//    PE15: (pe15, 15, Input<Floating>, AFRH),
-//]);
+gpio!(GPIOE, gpioe, gpioe, gpioeen, gpioerst, PEx, [
+    PE0: (pe0, 0, Input<Floating>, AFRL),
+    PE1: (pe1, 1, Input<Floating>, AFRL),
+    PE2: (pe2, 2, Input<Floating>, AFRL),
+    PE3: (pe3, 3, Input<Floating>, AFRL),
+    PE4: (pe4, 4, Input<Floating>, AFRL),
+    PE5: (pe5, 5, Input<Floating>, AFRL),
+    PE6: (pe6, 6, Input<Floating>, AFRL),
+    PE7: (pe7, 7, Input<Floating>, AFRL),
+    PE8: (pe8, 8, Input<Floating>, AFRH),
+    PE9: (pe9, 9, Input<Floating>, AFRH),
+    PE10: (pe10, 10, Input<Floating>, AFRH),
+    PE11: (pe11, 11, Input<Floating>, AFRH),
+    PE12: (pe12, 12, Input<Floating>, AFRH),
+    PE13: (pe13, 13, Input<Floating>, AFRH),
+    PE14: (pe14, 14, Input<Floating>, AFRH),
+    PE15: (pe15, 15, Input<Floating>, AFRH),
+]);
 
-// gpio!(GPIOF, gpiof, gpiof, gpiofen, gpiofrst, PFx, [
-//    PF0: (pf0, 0, Input<Floating>, AFRL),
-//    PF1: (pf1, 1, Input<Floating>, AFRL),
-//    PF2: (pf2, 2, Input<Floating>, AFRL),
-//    PF3: (pf3, 3, Input<Floating>, AFRL),
-//    PF5: (pf5, 5, Input<Floating>, AFRL),
-//    PF6: (pf6, 6, Input<Floating>, AFRL),
-//    PF9: (pf9, 9, Input<Floating>, AFRH),
-//    PF10: (pf10, 10, Input<Floating>, AFRH),
-//]);
+gpio!(GPIOF, gpiof, gpiof, gpiofen, gpiofrst, PFx, [
+    PF0: (pf0, 0, Input<Floating>, AFRL),
+    PF1: (pf1, 1, Input<Floating>, AFRL),
+    PF2: (pf2, 2, Input<Floating>, AFRL),
+    PF3: (pf3, 3, Input<Floating>, AFRL),
+    PF5: (pf5, 5, Input<Floating>, AFRL),
+    PF6: (pf6, 6, Input<Floating>, AFRL),
+    PF9: (pf9, 9, Input<Floating>, AFRH),
+    PF10: (pf10, 10, Input<Floating>, AFRH),
+]);
