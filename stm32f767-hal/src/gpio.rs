@@ -666,3 +666,9 @@ gpio!(GPIOF, gpiof, gpiof, gpiofen, gpiofrst, PFx, [
     PF9: (pf9, 9, Input<Floating>, AFRH),
     PF10: (pf10, 10, Input<Floating>, AFRH),
 ]);
+
+gpio!(GPIOG, gpiog, gpiog, gpiogen, gpiogrst, PGx, [
+    PG2: (pg2, 2, Input<Floating>, AFRL),
+    PG11: (pg11, 11, Input<Floating>, AFRH),
+    PG13: (pg13, 13, Input<Floating>, AFRH),
+]);

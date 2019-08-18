@@ -241,7 +241,7 @@ dependencies = [
 [[package]]
 name = "oxcc-stm32f767"
 version = "0.1.1"
-source = "git+https://github.com/jonlamb-gh/oxcc-stm32f767.git?branch=updates#972ed5ef91cb586e9d30b5cd75a9e05bc687f709"
+source = "git+https://github.com/jonlamb-gh/oxcc-stm32f767.git?branch=updates#b4dcf5206f404fd8ff83a1a51e8184ac6ef6708f"
 dependencies = [
  "bare-metal 0.2.4 (registry+https://github.com/rust-lang/crates.io-index)",
  "cortex-m 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
