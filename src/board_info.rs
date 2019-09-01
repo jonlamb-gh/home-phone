@@ -1,5 +1,5 @@
-use core::fmt::Write;
 use crate::build_info;
+use core::fmt::Write;
 
 pub fn build_info<T: Write>(writer: &mut T) {
     // Read the device unique ID, see 45.6
@@ -17,5 +17,6 @@ pub fn build_info<T: Write>(writer: &mut T) {
         id3,
         id2,
         id1
-    ).ok();
+    )
+    .ok();
 }
