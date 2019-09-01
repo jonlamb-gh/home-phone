@@ -21,7 +21,6 @@ use nucleo_f767zi::hal::gpio::Speed::VeryHigh;
 use nucleo_f767zi::hal::prelude::*;
 use nucleo_f767zi::hal::serial::Serial;
 use nucleo_f767zi::hal::stm32f7x7::{self, interrupt, SYST};
-use nucleo_f767zi::hal::timer::Timer;
 use nucleo_f767zi::led::{Color, Leds};
 use smoltcp::iface::{EthernetInterfaceBuilder, NeighborCache};
 use smoltcp::socket::{SocketSet, TcpSocket, TcpSocketBuffer};
@@ -34,7 +33,6 @@ mod build_info {
     include!(concat!(env!("OUT_DIR"), "/built.rs"));
 }
 
-// TODO
 const SRC_MAC: [u8; 6] = [0x02, 0x00, 0x05, 0x06, 0x07, 0x08];
 const LOCAL_IP: Ipv4Address = Ipv4Address([192, 168, 1, 39]);
 const TCP_PORT: u16 = 1234;
@@ -57,16 +55,7 @@ fn main() -> ! {
     let mut flash = peripherals.FLASH.constrain();
     let mut rcc = peripherals.RCC.constrain();
 
-    // TODO - revist my RCC bits
-    // set up PLL to 168MHz from 16MHz HSI
-    // Default clock configuration runs at 16 MHz
-    //let clocks = rcc.cfgr.freeze(&mut flash.acr);
-    //
-    //let clocks = rcc.cfgr.freeze_max(&mut flash.acr);
-    //
     let clocks = rcc.cfgr.sysclk(168.mhz()).freeze(&mut flash.acr);
-
-    //let clocks = rcc.cfgr.sysclk(32.mhz()).freeze(&mut flash.acr);
 
     let mut gpioa = peripherals.GPIOA.split(&mut rcc.ahb1);
     let mut gpiob = peripherals.GPIOB.split(&mut rcc.ahb1);
@@ -184,6 +173,29 @@ fn main() -> ! {
 
     writeln!(debug_console, "Link up").ok();
 
+    let ip_addr = IpCidr::new(IpAddress::from(LOCAL_IP), 24);
+    let mut ip_addrs = [ip_addr];
+    let mut neighbor_storage = [None; 16];
+    let neighbor_cache = NeighborCache::new(&mut neighbor_storage[..]);
+    let ethernet_addr = EthernetAddress(SRC_MAC);
+    let mut iface = EthernetInterfaceBuilder::new(ethdev)
+        .ethernet_addr(ethernet_addr)
+        .ip_addrs(&mut ip_addrs[..])
+        .neighbor_cache(neighbor_cache)
+        .finalize();
+
+    let mut server_rx_buffer = [0; 2048];
+    let mut server_tx_buffer = [0; 2048];
+    let server_socket = TcpSocket::new(
+        TcpSocketBuffer::new(&mut server_rx_buffer[..]),
+        TcpSocketBuffer::new(&mut server_tx_buffer[..]),
+    );
+    let mut sockets_storage = [None, None];
+    let mut sockets = SocketSet::new(&mut sockets_storage[..]);
+    let server_handle = sockets.add(server_socket);
+
+    writeln!(debug_console, "Ready, listening at {}", ip_addr).ok();
+
     setup_systick(&mut core_peripherals.SYST);
 
     loop {
@@ -193,8 +205,48 @@ fn main() -> ! {
             *eth_pending = false;
         });
 
-        //writeln!(debug_console, "Time {}", time).ok();
+        cortex_m::interrupt::free(|cs| {
+            let mut eth_pending = ETH_PENDING.borrow(cs).borrow_mut();
+            *eth_pending = false;
+        });
+
         leds[Color::Blue].toggle();
+
+        match iface.poll(&mut sockets, Instant::from_millis(time as i64)) {
+            Ok(true) => {
+                let mut socket = sockets.get::<TcpSocket>(server_handle);
+                if !socket.is_open() {
+                    socket
+                        .listen(TCP_PORT)
+                        .or_else(|e| writeln!(debug_console, "TCP listen error: {:?}", e))
+                        .unwrap();
+                }
+
+                if socket.can_send() {
+                    write!(socket, "hello\n")
+                        .map(|_| {
+                            socket.close();
+                        })
+                        .or_else(|e| writeln!(debug_console, "TCP send error: {:?}", e))
+                        .unwrap();
+                }
+            }
+            Ok(false) => {
+                // Sleep if no ethernet work is pending
+                cortex_m::interrupt::free(|cs| {
+                    let eth_pending = ETH_PENDING.borrow(cs).borrow_mut();
+                    if !*eth_pending {
+                        asm::wfi();
+                        // Awaken by interrupt
+                    }
+                });
+            }
+            Err(e) =>
+            // Ignore malformed packets
+            {
+                writeln!(debug_console, "Error: {:?}", e).unwrap()
+            }
+        }
     }
 }
 
