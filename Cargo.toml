@@ -1,42 +1,15 @@
 [package]
 name = "home-phone"
+version = "0.1.0"
 authors = ["Jon Lamb"]
 edition = "2018"
-readme = "README.md"
-version = "0.1.0"
 
-[[bin]]
-name = "home-phone"
-test = false
-bench = false
+[dependencies.bcm2711-hal]
+git = "https://github.com/jonlamb-gh/rpi4-rust-workspace.git"
+branch = "master"
 
-[dependencies]
-cortex-m-semihosting = "0.3.3"
-#panic-halt = "0.2.0"
-panic-semihosting = "0.5.2"
-
-[dependencies.cortex-m]
-version = "0.6.0"
-features = ["const-fn"]
-
-[dependencies.cortex-m-rt]
-version = "0.6.10"
-features = ["device"]
-
-[dependencies.nucleo-f767zi]
-features = ["rt"]
-path = "nucleo-f767zi"
-
-[dependencies.smoltcp]
-git = "https://github.com/m-labs/smoltcp"
-ref = "1ada3da5aa33917daf891dda2242d7f5beadfb10"
+[dependencies.raspi3_boot]
+git = "https://github.com/jonlamb-gh/rpi4-rust-workspace.git"
+branch = "master"
 default-features = false
-features = ["proto-ipv4", "socket-icmp", "socket-udp", "socket-tcp"]
-
-[build-dependencies]
-built = "0.3.1"
-
-[profile.release]
-codegen-units = 1 # better optimizations
-debug = true # symbols are nice and they don't increase the size on Flash
-lto = true # better optimizations
+features = ["panic-uart1"]
