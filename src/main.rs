@@ -1,5 +1,8 @@
 #![no_std]
 #![no_main]
+#![cfg_attr(test, feature(custom_test_frameworks))]
+#![cfg_attr(test, test_runner(test_runner::runner))]
+#![cfg_attr(test, reexport_test_harness_main = "test_main")]
 
 extern crate bcm2711_hal as hal;
 
@@ -14,7 +17,20 @@ use crate::hal::serial::Serial;
 use crate::hal::time::Bps;
 use core::fmt::Write;
 
-fn kernel_entry() -> ! {
+#[cfg(test)]
+raspi3_boot::entry!(test_entry);
+#[cfg(test)]
+fn test_entry() -> ! {
+    test_main();
+
+    loop {
+        //asm::wfe();
+    }
+}
+
+#[cfg(not(test))]
+raspi3_boot::entry!(main);
+fn main() -> ! {
     let mut mbox = Mailbox::new(MBOX::new());
     let clocks = Clocks::freeze(&mut mbox).unwrap();
     let gpio = GPIO::new();
@@ -142,4 +158,10 @@ fn alloc_framebuffer(mbox: &mut Mailbox) -> AllocFramebufferRepr {
     }
 }
 
-raspi3_boot::entry!(kernel_entry);
+#[cfg(test)]
+mod tests {
+    #[test_case]
+    fn it_works() {
+        assert_eq!(2 + 2, 4);
+    }
+}
