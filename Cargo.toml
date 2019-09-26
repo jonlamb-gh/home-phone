@@ -4,6 +4,8 @@ version = "0.1.0"
 authors = ["Jon Lamb"]
 edition = "2018"
 
+[dependencies]
+
 [dependencies.bcm2711-hal]
 git = "https://github.com/jonlamb-gh/rpi4-rust-workspace.git"
 branch = "master"
@@ -16,6 +18,9 @@ features = ["panic-uart1"]
 
 [dev-dependencies.test-runner]
 path = "deps/test-runner"
+
+[dev-dependencies.qemu]
+path = "deps/qemu"
 
 [package.metadata.cargo-xbuild]
 sysroot_path = "target/sysroot"

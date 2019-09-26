@@ -17,15 +17,17 @@ use crate::hal::serial::Serial;
 use crate::hal::time::Bps;
 use core::fmt::Write;
 
+// TODO - move this into the test-runner crate?
 #[cfg(test)]
 raspi3_boot::entry!(test_entry);
 #[cfg(test)]
-fn test_entry() -> ! {
+pub fn test_entry() -> ! {
     test_main();
 
-    loop {
-        //asm::wfe();
-    }
+    // TODO - status code Failed from panic handler
+    //qemu::exit(qemu::ExitCode::Failed);
+
+    qemu::exit(qemu::ExitCode::Success);
 }
 
 #[cfg(not(test))]

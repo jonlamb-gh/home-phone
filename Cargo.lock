@@ -58,6 +58,7 @@ name = "home-phone"
 version = "0.1.0"
 dependencies = [
  "bcm2711-hal 0.1.0 (git+https://github.com/jonlamb-gh/rpi4-rust-workspace.git)",
+ "qemu 0.1.0",
  "raspi3_boot 0.1.0 (git+https://github.com/jonlamb-gh/rpi4-rust-workspace.git)",
  "test-runner 0.1.0",
 ]
@@ -66,6 +67,10 @@ dependencies = [
 name = "nb"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "qemu"
+version = "0.1.0"
 
 [[package]]
 name = "r0"

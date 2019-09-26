@@ -29,6 +29,11 @@ cargo xrun
 
 TODO
 
+Using the custom runner with QEMU:
+
+```bash
+cargo xtest
+```
 
 ## U-boot
 

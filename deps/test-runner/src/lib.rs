@@ -1,7 +1,9 @@
-//! Taken mostly from https://os.phil-opp.com/testing/
+//! Inspired by https://os.phil-opp.com/testing and https://github.com/japaric/utest
 
 #![no_std]
 #![feature(custom_test_frameworks)]
+//#![test_runner(crate::runner)]
+//#![reexport_test_harness_main = "test_main"]
 
 extern crate bcm2711_hal as hal;
 
@@ -26,9 +28,11 @@ pub fn runner(tests: &[&dyn Fn()]) {
 
     let mut serial = Serial::uart1(UART1::new(), (tx, rx), Bps(115200), clocks);
 
-    writeln!(serial, "Running {} tests", tests.len()).unwrap();
+    writeln!(serial, "\nrunning {} tests", tests.len()).unwrap();
     for test in tests {
+        write!(serial, "test <no_name> ...").unwrap();
         test();
+        writeln!(serial, " ok").unwrap();
     }
-    writeln!(serial, "Done").unwrap();
+    writeln!(serial, "\ntest result: ok").unwrap();
 }
