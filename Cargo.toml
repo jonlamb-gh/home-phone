@@ -14,7 +14,7 @@ branch = "master"
 git = "https://github.com/jonlamb-gh/rpi4-rust-workspace.git"
 branch = "master"
 default-features = false
-features = ["panic-uart1"]
+features = []
 
 [dev-dependencies.test-runner]
 path = "deps/test-runner"

@@ -1,10 +1,14 @@
 #![no_std]
 #![no_main]
+#![cfg_attr(not(test), feature(core_intrinsics))]
 #![cfg_attr(test, feature(custom_test_frameworks))]
 #![cfg_attr(test, test_runner(test_runner::runner))]
 #![cfg_attr(test, reexport_test_harness_main = "test_main")]
 
 extern crate bcm2711_hal as hal;
+
+#[cfg(not(test))]
+mod panic_handler;
 
 use crate::hal::bcm2711::gpio::GPIO;
 use crate::hal::bcm2711::mbox::MBOX;
@@ -16,19 +20,6 @@ use crate::hal::prelude::*;
 use crate::hal::serial::Serial;
 use crate::hal::time::Bps;
 use core::fmt::Write;
-
-// TODO - move this into the test-runner crate?
-#[cfg(test)]
-raspi3_boot::entry!(test_entry);
-#[cfg(test)]
-pub fn test_entry() -> ! {
-    test_main();
-
-    // TODO - status code Failed from panic handler
-    //qemu::exit(qemu::ExitCode::Failed);
-
-    qemu::exit(qemu::ExitCode::Success);
-}
 
 #[cfg(not(test))]
 raspi3_boot::entry!(main);
@@ -162,6 +153,16 @@ fn alloc_framebuffer(mbox: &mut Mailbox) -> AllocFramebufferRepr {
 
 #[cfg(test)]
 mod tests {
+    // Uses the QEMU panic handler
+
+    // TODO - move this into the test-runner crate?
+    raspi3_boot::entry!(test_entry);
+    pub fn test_entry() -> ! {
+        crate::test_main();
+
+        qemu::exit(qemu::ExitCode::Success)
+    }
+
     #[test_case]
     fn it_works() {
         assert_eq!(2 + 2, 4);

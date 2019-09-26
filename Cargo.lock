@@ -71,6 +71,9 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "qemu"
 version = "0.1.0"
+dependencies = [
+ "bcm2711-hal 0.1.0 (git+https://github.com/jonlamb-gh/rpi4-rust-workspace.git)",
+]
 
 [[package]]
 name = "r0"
@@ -82,7 +85,6 @@ name = "raspi3_boot"
 version = "0.1.0"
 source = "git+https://github.com/jonlamb-gh/rpi4-rust-workspace.git#89d7e198853574edf70f38f4f696f65ff8596ce9"
 dependencies = [
- "bcm2711-hal 0.1.0 (git+https://github.com/jonlamb-gh/rpi4-rust-workspace.git)",
  "cortex-a 2.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "r0 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
