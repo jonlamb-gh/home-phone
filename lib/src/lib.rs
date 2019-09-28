@@ -8,6 +8,7 @@ pub extern crate bcm2711_hal as hal;
 
 pub mod logger;
 pub mod net;
+pub mod phone_number;
 pub mod sync;
 
 #[cfg(test)]
