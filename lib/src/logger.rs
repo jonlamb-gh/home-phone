@@ -24,9 +24,9 @@ impl Logger {
         }
     }
 
-    pub fn set_inner(&mut self, inner: Inner) {
+    pub fn set_inner(&self, inner: Inner) {
         self.inner.lock(|i| {
-            *i = Some(inner);
+            let _ = i.replace(inner);
         });
     }
 }

@@ -20,7 +20,7 @@ use lib::hal::time::Bps;
 use lib::logger::Logger;
 use log::{info, LevelFilter};
 
-static mut GLOBAL_LOGGER: Logger = Logger::new();
+static GLOBAL_LOGGER: Logger = Logger::new();
 
 #[cfg(not(test))]
 raspi3_boot::entry!(main);
@@ -35,12 +35,10 @@ fn main() -> ! {
 
     let serial = Serial::uart1(UART1::new(), (tx, rx), Bps(115200), clocks);
 
-    unsafe {
-        GLOBAL_LOGGER.set_inner(serial);
-        log::set_logger(&GLOBAL_LOGGER)
-            .map(|()| log::set_max_level(LevelFilter::Trace))
-            .unwrap();
-    }
+    GLOBAL_LOGGER.set_inner(serial);
+    log::set_logger(&GLOBAL_LOGGER)
+        .map(|()| log::set_max_level(LevelFilter::Trace))
+        .unwrap();
 
     let sys_timer = SysTimer::new();
     let mut sys_counter = sys_timer.split().sys_counter;
@@ -71,12 +69,10 @@ mod tests {
 
         let serial = Serial::uart1(UART1::new(), (tx, rx), Bps(115200), clocks);
 
-        unsafe {
-            GLOBAL_LOGGER.set_inner(serial);
-            log::set_logger(&GLOBAL_LOGGER)
-                .map(|()| log::set_max_level(LevelFilter::Trace))
-                .unwrap();
-        }
+        GLOBAL_LOGGER.set_inner(serial);
+        log::set_logger(&GLOBAL_LOGGER)
+            .map(|()| log::set_max_level(LevelFilter::Trace))
+            .unwrap();
 
         crate::test_main();
 

@@ -25,7 +25,7 @@ mod tests {
     use log::{trace, LevelFilter};
     use logger::Logger;
 
-    static mut GLOBAL_LOGGER: Logger = Logger::new();
+    static GLOBAL_LOGGER: Logger = Logger::new();
 
     // TODO - move this into the test-runner crate?
     raspi3_boot::entry!(test_entry);
@@ -40,12 +40,10 @@ mod tests {
 
         let serial = Serial::uart1(UART1::new(), (tx, rx), Bps(115200), clocks);
 
-        unsafe {
-            GLOBAL_LOGGER.set_inner(serial);
-            log::set_logger(&GLOBAL_LOGGER)
-                .map(|()| log::set_max_level(LevelFilter::Trace))
-                .unwrap();
-        }
+        GLOBAL_LOGGER.set_inner(serial);
+        log::set_logger(&GLOBAL_LOGGER)
+            .map(|()| log::set_max_level(LevelFilter::Trace))
+            .unwrap();
 
         crate::test_main();
 
