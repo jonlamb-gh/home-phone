@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -e
+
+cargo xtest
+
+cargo xtest -p lib
+
+exit 0

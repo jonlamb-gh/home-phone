@@ -27,20 +27,27 @@ cargo xrun
 
 ## Testing
 
-TODO
+### QEMU, no hardware
 
 Using the custom runner with QEMU:
 
 ```bash
+# Binary unit tests and integration tests
 cargo xtest
+
+# Libary unit tests
+cargo xtext -p lib
 ```
+
+### Hardware tests
+
+TODO
 
 ## U-boot
 
 Using 64 bit U-boot:
 
 TODO
-
 
 Environment:
 TODO

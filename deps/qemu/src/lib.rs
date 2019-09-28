@@ -4,9 +4,7 @@
 #![no_std]
 #![feature(asm, core_intrinsics)]
 
-extern crate bcm2711_hal as hal;
-
-mod panic_uart1;
+mod panic_handler;
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 #[repr(usize)]

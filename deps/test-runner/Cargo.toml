@@ -4,6 +4,6 @@ version = "0.1.0"
 authors = ["Jon Lamb"]
 edition = "2018"
 
-[dependencies.bcm2711-hal]
-git = "https://github.com/jonlamb-gh/rpi4-rust-workspace.git"
-branch = "master"
+[dependencies.log]
+version = "0.4"
+default-features = false

@@ -1,14 +1,14 @@
-use crate::hal::bcm2711::gpio::GPIO;
-use crate::hal::bcm2711::mbox::MBOX;
-use crate::hal::bcm2711::uart1::UART1;
-use crate::hal::clocks::Clocks;
-use crate::hal::mailbox::Mailbox;
-use crate::hal::prelude::*;
-use crate::hal::serial::Serial;
-use crate::hal::time::Bps;
 use core::fmt::Write;
 use core::intrinsics;
 use core::panic::PanicInfo;
+use lib::hal::bcm2711::gpio::GPIO;
+use lib::hal::bcm2711::mbox::MBOX;
+use lib::hal::bcm2711::uart1::UART1;
+use lib::hal::clocks::Clocks;
+use lib::hal::mailbox::Mailbox;
+use lib::hal::prelude::*;
+use lib::hal::serial::Serial;
+use lib::hal::time::Bps;
 
 #[panic_handler]
 fn panic_handler(info: &PanicInfo) -> ! {

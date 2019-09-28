@@ -1,28 +1,25 @@
 [package]
-name = "home-phone"
+name = "lib"
 version = "0.1.0"
 authors = ["Jon Lamb"]
 edition = "2018"
 
-# Using a workspace layout to make it easier
-# to get integration tests working
-[workspace]
-members = [
-  "lib",
-]
+[dependencies]
+typenum = "1.10"
+heapless = "0.5"
 
-[dependencies.lib]
-path = "lib"
-
-[dependencies.raspi3_boot]
+[dependencies.bcm2711-hal]
 git = "https://github.com/jonlamb-gh/rpi4-rust-workspace.git"
 branch = "master"
-default-features = false
-features = []
 
 [dependencies.log]
 version = "0.4"
 default-features = false
+
+[dependencies.arrayvec]
+version = "0.4"
+default-features = false
+features = ["array-sizes-33-128"]
 
 [dependencies.smoltcp]
 git = "https://github.com/m-labs/smoltcp.git"
@@ -37,11 +34,17 @@ features = [
     "verbose"
 ]
 
+[dev-dependencies.raspi3_boot]
+git = "https://github.com/jonlamb-gh/rpi4-rust-workspace.git"
+branch = "master"
+default-features = false
+features = []
+
 [dev-dependencies.test-runner]
-path = "deps/test-runner"
+path = "../deps/test-runner"
 
 [dev-dependencies.qemu]
-path = "deps/qemu"
+path = "../deps/qemu"
 
 [package.metadata.cargo-xbuild]
-sysroot_path = "target/sysroot"
+sysroot_path = "../target/sysroot"
