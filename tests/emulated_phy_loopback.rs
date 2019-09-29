@@ -22,7 +22,7 @@ use smoltcp::socket::{SocketSet, TcpSocket, TcpSocketBuffer};
 use smoltcp::time::{Duration, Instant};
 use smoltcp::wire::{EthernetAddress, IpAddress, IpCidr};
 
-static mut GLOBAL_LOGGER: Logger = Logger::new();
+static GLOBAL_LOGGER: Logger = Logger::new();
 
 raspi3_boot::entry!(test_entry);
 fn test_entry() -> ! {
@@ -36,12 +36,10 @@ fn test_entry() -> ! {
 
     let serial = Serial::uart1(UART1::new(), (tx, rx), Bps(115200), clocks);
 
-    unsafe {
-        GLOBAL_LOGGER.set_inner(serial);
-        log::set_logger(&GLOBAL_LOGGER)
-            .map(|()| log::set_max_level(LevelFilter::Info))
-            .unwrap();
-    }
+    GLOBAL_LOGGER.set_inner(serial);
+    log::set_logger_broken_cas(&GLOBAL_LOGGER)
+        .map(|()| log::set_max_level(LevelFilter::Info))
+        .unwrap();
 
     crate::test_main();
 

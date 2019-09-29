@@ -36,7 +36,7 @@ fn main() -> ! {
     let serial = Serial::uart1(UART1::new(), (tx, rx), Bps(115200), clocks);
 
     GLOBAL_LOGGER.set_inner(serial);
-    log::set_logger(&GLOBAL_LOGGER)
+    log::set_logger_broken_cas(&GLOBAL_LOGGER)
         .map(|()| log::set_max_level(LevelFilter::Trace))
         .unwrap();
 
@@ -46,6 +46,7 @@ fn main() -> ! {
     info!("Starting");
 
     loop {
+        info!("main loop");
         sys_counter.delay_ms(500u32);
     }
 }
@@ -70,7 +71,7 @@ mod tests {
         let serial = Serial::uart1(UART1::new(), (tx, rx), Bps(115200), clocks);
 
         GLOBAL_LOGGER.set_inner(serial);
-        log::set_logger(&GLOBAL_LOGGER)
+        log::set_logger_broken_cas(&GLOBAL_LOGGER)
             .map(|()| log::set_max_level(LevelFilter::Trace))
             .unwrap();
 
