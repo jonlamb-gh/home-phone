@@ -2,8 +2,6 @@
 
 set -e
 
-cargo xtest
-
-cargo xtest -p lib
+cargo xtest -p home-phone -p lib
 
 exit 0
