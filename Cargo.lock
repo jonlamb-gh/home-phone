@@ -85,6 +85,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "ds323x"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cd11555cabf31820a4d15637b0c5c9c77424431020bf867183d2dafd3e3ca16a"
+dependencies = [
+ "embedded-hal",
+]
+
+[[package]]
 name = "embedded-hal"
 version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -150,6 +159,7 @@ version = "0.1.0"
 dependencies = [
  "arrayvec",
  "bcm2711-hal",
+ "ds323x",
  "heapless",
  "log",
  "nom",

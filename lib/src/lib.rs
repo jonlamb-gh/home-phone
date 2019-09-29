@@ -10,6 +10,7 @@ pub mod display;
 pub mod logger;
 pub mod net;
 pub mod phone_number;
+pub mod rtc;
 pub mod sync;
 
 #[cfg(test)]

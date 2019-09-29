@@ -7,6 +7,7 @@ edition = "2018"
 [dependencies]
 typenum = "1.10"
 heapless = "0.5"
+ds323x = "0.2"
 
 [dependencies.bcm2711-hal]
 git = "https://github.com/jonlamb-gh/rpi4-rust-workspace.git"
