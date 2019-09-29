@@ -8,7 +8,7 @@ use core::convert::TryFrom;
 use core::fmt;
 use nom::character::complete::digit1;
 use nom::error::ErrorKind;
-use nom::{do_parse, named, tag};
+use nom::{do_parse, named, tag, take};
 
 // TODO - validator, error mapping
 
@@ -37,7 +37,10 @@ impl PhoneNumber {
 
     pub fn from_utf8<'a>(s: &'a str) -> Result<Self, Error> {
         // TODO - error mapping
-        let (_remaining, num) = parse_num(s).map_err(|_| Error::NoNumber)?;
+        let (_remaining, num) = parse_num(s)
+            .or(parse_ud_num(s).map_err(|_| Error::NoNumber))
+            .map_err(|_| Error::NoNumber)?;
+
         Ok(num)
     }
 
@@ -67,6 +70,24 @@ named!(
             >> second: digit1
             >> tag!("-")
             >> third: digit1
+            >> (PhoneNumber {
+                area_code: u16::from_str_radix(first, 10)
+                    .map_err(|_| nom::Err::Error((first, ErrorKind::Digit)))?,
+                exchange: u16::from_str_radix(second, 10)
+                    .map_err(|_| nom::Err::Error((first, ErrorKind::Digit)))?,
+                line_number: u16::from_str_radix(third, 10)
+                    .map_err(|_| nom::Err::Error((first, ErrorKind::Digit)))?,
+            })
+    )
+);
+
+// TODO - combine these parsers
+named!(
+    parse_ud_num<&str, PhoneNumber>,
+    do_parse!(
+        first: take!(3)
+            >> second: take!(3)
+            >> third: take!(4)
             >> (PhoneNumber {
                 area_code: u16::from_str_radix(first, 10)
                     .map_err(|_| nom::Err::Error((first, ErrorKind::Digit)))?,
@@ -122,12 +143,11 @@ mod tests {
         assert_eq!(res, Ok(num));
     }
 
-    // TODO - doesnt work yet
-    //#[test_case]
-    //fn undelimited_parse() {
-    //    trace!("undelimited_parse");
-    //    let num = PhoneNumber::new(123, 456, 1234);
-    //    let res = PhoneNumber::try_from("1234561234");
-    //    assert_eq!(res, Ok(num));
-    //}
+    #[test_case]
+    fn undelimited_parse() {
+        trace!("undelimited_parse");
+        let num = PhoneNumber::new(123, 456, 1234);
+        let res = PhoneNumber::try_from("1234561234");
+        assert_eq!(res, Ok(num));
+    }
 }
