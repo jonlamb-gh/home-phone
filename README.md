@@ -1,5 +1,9 @@
 # Home Phone
 
+Firmware for my VoIP home phone.
+
+![cherry-enclosure](https://jonlamb-gh.github.io/home-phone/home_phone.jpg)
+
 ## Building
 
 ```rust
