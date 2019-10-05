@@ -36,9 +36,11 @@ fn main() -> ! {
     let serial = Serial::uart1(UART1::new(), (tx, rx), Bps(115200), clocks);
 
     GLOBAL_LOGGER.set_inner(serial);
-    log::set_logger_broken_cas(&GLOBAL_LOGGER)
-        .map(|()| log::set_max_level(LevelFilter::Trace))
-        .unwrap();
+    unsafe {
+        log::set_logger_racy(&GLOBAL_LOGGER)
+            .map(|()| log::set_max_level(LevelFilter::Trace))
+            .unwrap();
+    }
 
     let sys_timer = SysTimer::new();
     let mut sys_counter = sys_timer.split().sys_counter;
@@ -71,9 +73,11 @@ mod tests {
         let serial = Serial::uart1(UART1::new(), (tx, rx), Bps(115200), clocks);
 
         GLOBAL_LOGGER.set_inner(serial);
-        log::set_logger_broken_cas(&GLOBAL_LOGGER)
-            .map(|()| log::set_max_level(LevelFilter::Trace))
-            .unwrap();
+        unsafe {
+            log::set_logger_racy(&GLOBAL_LOGGER)
+                .map(|()| log::set_max_level(LevelFilter::Trace))
+                .unwrap();
+        }
 
         crate::test_main();
 

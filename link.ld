@@ -14,17 +14,17 @@ SECTIONS
         KEEP(*(.text.boot)) *(.text .text.*)
     }
 
-    .rodata :
+    .rodata ALIGN(16):
     {
         *(.rodata .rodata.*)
     }
 
-    .data :
+    .data ALIGN(16):
     {
         *(.data .data.*)
     }
 
-    .bss ALIGN(8):
+    .bss ALIGN(16):
     {
         __bss_start = .;
         *(.bss .bss.*)

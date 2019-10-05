@@ -21,9 +21,7 @@ default-features = false
 features = []
 
 [dependencies.log]
-#version = "0.4"
-git = "https://github.com/jonlamb-gh/log.git"
-branch = "broken-cas"
+version = "0.4"
 default-features = false
 
 [dependencies.smoltcp]

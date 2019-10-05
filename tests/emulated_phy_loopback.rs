@@ -37,9 +37,11 @@ fn test_entry() -> ! {
     let serial = Serial::uart1(UART1::new(), (tx, rx), Bps(115200), clocks);
 
     GLOBAL_LOGGER.set_inner(serial);
-    log::set_logger_broken_cas(&GLOBAL_LOGGER)
-        .map(|()| log::set_max_level(LevelFilter::Info))
-        .unwrap();
+    unsafe {
+        log::set_logger_racy(&GLOBAL_LOGGER)
+            .map(|()| log::set_max_level(LevelFilter::Trace))
+            .unwrap();
+    }
 
     crate::test_main();
 
@@ -80,7 +82,6 @@ fn tcp_send_recv() {
 
     // Up to 1024 ARP (neighbor) cache entries
     let mut neighbor_storage = [None; 1024];
-    // ARP cache is writable until now+N seconds
     let neighbor_cache = NeighborCache::new(&mut neighbor_storage[..]);
 
     let ethernet_addr = EthernetAddress::default();

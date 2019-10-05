@@ -146,7 +146,7 @@ name = "home-phone"
 version = "0.1.0"
 dependencies = [
  "lib",
- "log 0.4.8 (git+https://github.com/jonlamb-gh/log.git?branch=broken-cas)",
+ "log",
  "qemu",
  "raspi3_boot",
  "smoltcp",
@@ -161,21 +161,13 @@ dependencies = [
  "bcm2711-hal",
  "ds323x",
  "heapless",
- "log 0.4.8 (git+https://github.com/jonlamb-gh/log.git?branch=broken-cas)",
+ "log",
  "nom",
  "qemu",
  "raspi3_boot",
  "smoltcp",
  "test-runner",
  "typenum",
-]
-
-[[package]]
-name = "log"
-version = "0.4.8"
-source = "git+https://github.com/jonlamb-gh/log.git?branch=broken-cas#43ae6716a291a6be7082310208197ac5426ce68a"
-dependencies = [
- "cfg-if",
 ]
 
 [[package]]
@@ -225,7 +217,7 @@ dependencies = [
 name = "qemu"
 version = "0.1.0"
 dependencies = [
- "log 0.4.8 (git+https://github.com/jonlamb-gh/log.git?branch=broken-cas)",
+ "log",
 ]
 
 [[package]]
@@ -259,7 +251,7 @@ source = "git+https://github.com/m-labs/smoltcp.git#1ada3da5aa33917daf891dda2242
 dependencies = [
  "bitflags",
  "byteorder",
- "log 0.4.8 (registry+https://github.com/rust-lang/crates.io-index)",
+ "log",
  "managed",
 ]
 
@@ -273,7 +265,7 @@ checksum = "dba1a27d3efae4351c8051072d619e3ade2820635c3958d826bfea39d59b54c8"
 name = "test-runner"
 version = "0.1.0"
 dependencies = [
- "log 0.4.8 (git+https://github.com/jonlamb-gh/log.git?branch=broken-cas)",
+ "log",
 ]
 
 [[package]]
