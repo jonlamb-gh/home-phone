@@ -169,6 +169,7 @@ dependencies = [
  "arrayvec",
  "bcm2711-hal",
  "ds323x",
+ "embedded-hal",
  "heapless",
  "keypad",
  "log",
@@ -178,6 +179,7 @@ dependencies = [
  "smoltcp",
  "test-runner",
  "typenum",
+ "void",
 ]
 
 [[package]]

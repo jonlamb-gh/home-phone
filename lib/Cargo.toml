@@ -50,6 +50,14 @@ branch = "master"
 default-features = false
 features = []
 
+[dev-dependencies.embedded-hal]
+features = ["unproven"]
+version = "*"
+
+[dev-dependencies.void]
+default-features = false
+version = "*"
+
 [dev-dependencies.test-runner]
 path = "../deps/test-runner"
 

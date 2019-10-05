@@ -1,7 +1,7 @@
 use crate::hal::gpio::*;
 use crate::hal::prelude::*;
 use crate::hal::time::{Duration, Instant};
-use keypad::{keypad_new, keypad_struct};
+use keypad::{keypad_new, keypad_struct, KeypadInput};
 
 const DEBOUNCE_DURATION: Duration = Duration::from_millis(25);
 const LONGPRESS_DURATION: Duration = Duration::from_secs(1);
@@ -12,9 +12,13 @@ pub enum KeypadEvent {
     LongPress(char),
 }
 
-pub struct Keypad {
+pub struct Keypad<INNER: KeypadDecomp> {
     states: KeyStateMatrix,
-    inner: KeypadInner,
+    inner: INNER,
+}
+
+pub trait KeypadDecomp {
+    fn decompose<'a>(&'a self) -> [[KeypadInput<'a>; 3]; 4];
 }
 
 // TODO - make generic over any GPIO pins
@@ -34,7 +38,7 @@ keypad_struct! {
     }
 }
 
-impl Keypad {
+impl KeypadInner {
     pub fn new(
         r0: Pin5<Input<PullUp>>,
         r1: Pin6<Input<PullUp>>,
@@ -44,6 +48,24 @@ impl Keypad {
         c1: Pin27<Output<PushPull>>,
         c2: Pin22<Output<PushPull>>,
     ) -> Self {
+        keypad_new!(KeypadInner {
+            rows: (r0, r1, r2, r3,),
+            columns: (c0, c1, c2,),
+        })
+    }
+}
+
+impl KeypadDecomp for KeypadInner {
+    fn decompose<'a>(&'a self) -> [[KeypadInput<'a>; 3]; 4] {
+        self.decompose()
+    }
+}
+
+impl<INNER> Keypad<INNER>
+where
+    INNER: KeypadDecomp,
+{
+    pub fn new(inner: INNER) -> Self {
         Keypad {
             states: [
                 [KeyState::new('1'), KeyState::new('2'), KeyState::new('3')],
@@ -51,10 +73,7 @@ impl Keypad {
                 [KeyState::new('7'), KeyState::new('8'), KeyState::new('9')],
                 [KeyState::new('*'), KeyState::new('0'), KeyState::new('#')],
             ],
-            inner: keypad_new!(KeypadInner {
-                rows: (r0, r1, r2, r3,),
-                columns: (c0, c1, c2,),
-            }),
+            inner,
         }
     }
 
@@ -138,11 +157,93 @@ impl KeyState {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use log::{debug, trace};
+    use core::marker::PhantomData;
+    use embedded_hal::digital::v2::{InputPin, OutputPin};
+    use log::trace;
+    use void::Void;
+
+    struct MockPin<MODE> {
+        state: bool,
+        _mode: PhantomData<MODE>,
+    }
+
+    impl<MODE> MockPin<MODE> {
+        fn new(state: bool) -> Self {
+            MockPin {
+                state,
+                _mode: PhantomData,
+            }
+        }
+    }
+
+    impl<MODE> InputPin for MockPin<Input<MODE>> {
+        type Error = Void;
+
+        fn is_high(&self) -> Result<bool, Self::Error> {
+            self.is_low().map(|b| !b)
+        }
+
+        fn is_low(&self) -> Result<bool, Self::Error> {
+            Ok(self.state == false)
+        }
+    }
+
+    impl<MODE> OutputPin for MockPin<Output<MODE>> {
+        type Error = Void;
+
+        fn set_high(&mut self) -> Result<(), Self::Error> {
+            self.state = true;
+            Ok(())
+        }
+
+        fn set_low(&mut self) -> Result<(), Self::Error> {
+            self.state = true;
+            Ok(())
+        }
+    }
+
+    keypad_struct! {
+        struct MockKeypadInner {
+            rows: (
+              MockPin<Input<PullUp>>,
+              MockPin<Input<PullUp>>,
+              MockPin<Input<PullUp>>,
+              MockPin<Input<PullUp>>,
+            ),
+            columns: (
+                MockPin<Output<PushPull>>,
+                MockPin<Output<PushPull>>,
+                MockPin<Output<PushPull>>,
+            ),
+        }
+    }
+
+    impl KeypadDecomp for MockKeypadInner {
+        fn decompose<'a>(&'a self) -> [[KeypadInput<'a>; 3]; 4] {
+            self.decompose()
+        }
+    }
 
     #[test_case]
-    fn todo() {
-        trace!("todo");
-        debug!("todo");
+    fn keypad_construction() {
+        trace!("keypad_construction");
+
+        let r0 = MockPin::new(false);
+        let r1 = MockPin::new(false);
+        let r2 = MockPin::new(false);
+        let r3 = MockPin::new(false);
+        let c0 = MockPin::new(false);
+        let c1 = MockPin::new(false);
+        let c2 = MockPin::new(false);
+
+        let inner = keypad_new!(MockKeypadInner {
+            rows: (r0, r1, r2, r3,),
+            columns: (c0, c1, c2,),
+        });
+
+        let mut keypad = Keypad::new(inner);
+
+        let t = Instant::from_millis(0);
+        assert_eq!(keypad.read(&t), None);
     }
 }
