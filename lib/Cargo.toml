@@ -40,6 +40,10 @@ version = "5.0"
 default-features = false
 features = []
 
+[dependencies.keypad]
+git = "https://github.com/jonlamb-gh/keypad.git"
+branch = "digital-v2"
+
 [dev-dependencies.raspi3_boot]
 git = "https://github.com/jonlamb-gh/rpi4-rust-workspace.git"
 branch = "master"

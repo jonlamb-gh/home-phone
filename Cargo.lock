@@ -154,6 +154,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "keypad"
+version = "0.1.4"
+source = "git+https://github.com/jonlamb-gh/keypad.git?branch=digital-v2#8d7b0efabef78709fc38d1c4b3d87bc34aea81a6"
+dependencies = [
+ "embedded-hal",
+ "void",
+]
+
+[[package]]
 name = "lib"
 version = "0.1.0"
 dependencies = [
@@ -161,6 +170,7 @@ dependencies = [
  "bcm2711-hal",
  "ds323x",
  "heapless",
+ "keypad",
  "log",
  "nom",
  "qemu",

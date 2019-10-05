@@ -7,6 +7,7 @@
 pub extern crate bcm2711_hal as hal;
 
 pub mod display;
+pub mod keypad;
 pub mod logger;
 pub mod net;
 pub mod phone_number;
