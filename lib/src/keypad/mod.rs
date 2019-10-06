@@ -1,6 +1,9 @@
+mod event_buffer;
+
 use crate::hal::gpio::*;
 use crate::hal::prelude::*;
 use crate::hal::time::{Duration, Instant};
+pub use crate::keypad::event_buffer::{EventBuffer, EventBufferMode};
 use keypad::{keypad_new, keypad_struct, KeypadInput};
 
 const DEBOUNCE_DURATION: Duration = Duration::from_millis(25);
@@ -10,6 +13,14 @@ const LONGPRESS_DURATION: Duration = Duration::from_secs(1);
 pub enum KeypadEvent {
     KeyPress(char),
     LongPress(char),
+}
+
+impl KeypadEvent {
+    pub fn as_char(&self) -> char {
+        match *self {
+            KeypadEvent::KeyPress(c) | KeypadEvent::LongPress(c) => c,
+        }
+    }
 }
 
 pub struct Keypad<INNER: KeypadDecomp> {
@@ -356,5 +367,13 @@ mod tests {
 
         let t = t_0 + (LONGPRESS_DURATION + Duration::from_millis(1));
         assert_eq!(keypad.read(&t), None);
+    }
+
+    #[test_case]
+    fn events() {
+        trace!("events");
+        let short = KeypadEvent::KeyPress('C');
+        let long = KeypadEvent::LongPress('C');
+        assert_eq!(short.as_char(), long.as_char());
     }
 }

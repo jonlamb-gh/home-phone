@@ -12,6 +12,8 @@ use nom::{do_parse, named, tag, take};
 
 // TODO - validator, error mapping
 
+pub const MAX_DIGITS: usize = 10;
+
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub enum Error {
     NoNumber,
