@@ -26,7 +26,19 @@ pub struct PhoneNumber {
     line_number: u16,
 }
 
+impl Default for PhoneNumber {
+    fn default() -> Self {
+        PhoneNumber::INVALID
+    }
+}
+
 impl PhoneNumber {
+    pub const INVALID: Self = PhoneNumber {
+        area_code: 0,
+        exchange: 0,
+        line_number: 0,
+    };
+
     pub fn new(area_code: u16, exchange: u16, line_number: u16) -> Self {
         PhoneNumber {
             area_code,
@@ -57,8 +69,8 @@ impl PhoneNumber {
     }
 
     pub fn is_valid(&self) -> bool {
-        // TODO
-        true
+        // TODO - just checks against INVALID
+        self != &Self::INVALID
     }
 }
 
@@ -123,6 +135,14 @@ impl fmt::Display for PhoneNumber {
 mod tests {
     use super::*;
     use log::{debug, trace};
+
+    #[test_case]
+    fn invalid_default() {
+        trace!("invalid_default");
+        let num = PhoneNumber::default();
+        assert_eq!(num, PhoneNumber::INVALID);
+        assert_eq!(num.is_valid(), false);
+    }
 
     #[test_case]
     fn new_number() {

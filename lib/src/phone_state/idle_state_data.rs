@@ -32,10 +32,12 @@ impl RowFormatter for IdleStateData {
             Row::Zero => {
                 if self.missed_calls != 0 {
                     write!(storage, "{: ^20}", "'*' Next | Clear '#'")?;
+                } else {
+                    write!(storage, "{: ^20}", "")?;
                 }
             }
             Row::One => {
-                // TODO - alignment doesn't seem to work with format_args here
+                // TODO - alignment doesn't seem to work with format_args here?
                 if self.missed_calls != 0 {
                     write!(
                         storage,
