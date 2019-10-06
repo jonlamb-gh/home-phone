@@ -2,7 +2,7 @@ use crate::display::{Row, RowStorage};
 use core::fmt;
 
 pub trait RowFormatter {
-    fn format_row(&mut self, row: Row, storage: &mut RowStorage) -> Result<(), fmt::Error>;
+    fn format_row(&self, row: Row, storage: &mut RowStorage) -> Result<(), fmt::Error>;
 }
 
 #[cfg(test)]
@@ -19,7 +19,7 @@ mod tests {
     }
 
     impl RowFormatter for TestData {
-        fn format_row(&mut self, row: Row, storage: &mut RowStorage) -> Result<(), fmt::Error> {
+        fn format_row(&self, row: Row, storage: &mut RowStorage) -> Result<(), fmt::Error> {
             storage.clear();
 
             match row {
@@ -43,7 +43,7 @@ mod tests {
     #[test_case]
     fn row_formatter() {
         trace!("row_formatter");
-        let mut data = TestData {
+        let data = TestData {
             r0: 1234,
             r1: -23.34,
             r2: "Up to 20 characters.",
@@ -53,7 +53,7 @@ mod tests {
         debug!("**********************");
         for row in Row::enumerate() {
             data.format_row(*row, &mut storage).unwrap();
-            debug!("*{}*", storage.as_str());
+            debug!("*{:20}*", storage.as_str());
             assert!(storage.len() <= 21);
         }
         debug!("**********************");

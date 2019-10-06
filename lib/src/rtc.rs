@@ -14,6 +14,20 @@ impl From<ds323x::DateTime> for DateTime {
     }
 }
 
+impl Default for DateTime {
+    fn default() -> Self {
+        DateTime::from(ds323x::DateTime {
+            year: 0,
+            month: 0,
+            day: 0,
+            weekday: 0,
+            hour: ds323x::Hours::AM(0),
+            minute: 0,
+            second: 0,
+        })
+    }
+}
+
 const DOW_STRINGS: [&'static str; 8] = ["Err", "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const MONTH_STRINGS: [&'static str; 13] = [

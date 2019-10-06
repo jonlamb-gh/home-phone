@@ -11,6 +11,7 @@ pub mod keypad;
 pub mod logger;
 pub mod net;
 pub mod phone_number;
+pub mod phone_state;
 pub mod rtc;
 pub mod sync;
 
