@@ -87,6 +87,13 @@ where
                 let long_pressed = self.states[row_index][col_index].long_pressed(time);
                 if changed && prev_pressed {
                     let c = self.states[row_index][col_index].key();
+
+                    // Clear all of the states, not tracking multi-key presses
+                    for s in self.states.iter_mut().flat_map(|r| r.iter_mut()) {
+                        s.last_db = *time;
+                        s.prev_pressed = false;
+                    }
+
                     return Some(match long_pressed {
                         false => KeypadEvent::KeyPress(c),
                         true => KeypadEvent::LongPress(c),
@@ -102,10 +109,10 @@ where
 type KeyStateMatrix = [[KeyState; 3]; 4];
 
 #[derive(Debug)]
-pub struct KeyState {
+struct KeyState {
     key: char,
     state: bool,
-    pub prev_pressed: bool,
+    prev_pressed: bool,
     last_db: Instant,
 }
 
@@ -163,14 +170,14 @@ mod tests {
     use void::Void;
 
     struct MockPin<MODE> {
-        state: bool,
+        is_low: bool,
         _mode: PhantomData<MODE>,
     }
 
     impl<MODE> MockPin<MODE> {
-        fn new(state: bool) -> Self {
+        fn new(is_low: bool) -> Self {
             MockPin {
-                state,
+                is_low,
                 _mode: PhantomData,
             }
         }
@@ -184,7 +191,7 @@ mod tests {
         }
 
         fn is_low(&self) -> Result<bool, Self::Error> {
-            Ok(self.state == false)
+            Ok(self.is_low)
         }
     }
 
@@ -192,12 +199,12 @@ mod tests {
         type Error = Void;
 
         fn set_high(&mut self) -> Result<(), Self::Error> {
-            self.state = true;
+            self.is_low = false;
             Ok(())
         }
 
         fn set_low(&mut self) -> Result<(), Self::Error> {
-            self.state = true;
+            self.is_low = true;
             Ok(())
         }
     }
@@ -225,8 +232,8 @@ mod tests {
     }
 
     #[test_case]
-    fn keypad_construction() {
-        trace!("keypad_construction");
+    fn construction() {
+        trace!("construction");
 
         let r0 = MockPin::new(false);
         let r1 = MockPin::new(false);
@@ -244,6 +251,110 @@ mod tests {
         let mut keypad = Keypad::new(inner);
 
         let t = Instant::from_millis(0);
+        assert_eq!(keypad.read(&t), None);
+    }
+
+    #[test_case]
+    fn short_press() {
+        trace!("short_press");
+
+        let r0 = MockPin::new(true);
+        let r1 = MockPin::new(false);
+        let r2 = MockPin::new(false);
+        let r3 = MockPin::new(false);
+        let c0 = MockPin::new(false);
+        let c1 = MockPin::new(false);
+        let c2 = MockPin::new(false);
+
+        let inner_set = keypad_new!(MockKeypadInner {
+            rows: (r0, r1, r2, r3,),
+            columns: (c0, c1, c2,),
+        });
+
+        let r0 = MockPin::new(false);
+        let r1 = MockPin::new(false);
+        let r2 = MockPin::new(false);
+        let r3 = MockPin::new(false);
+        let c0 = MockPin::new(false);
+        let c1 = MockPin::new(false);
+        let c2 = MockPin::new(false);
+
+        let inner_clr = keypad_new!(MockKeypadInner {
+            rows: (r0, r1, r2, r3,),
+            columns: (c0, c1, c2,),
+        });
+
+        let mut keypad = Keypad::new(inner_set);
+
+        let t_0 = Instant::from_millis(0);
+        assert_eq!(keypad.read(&t_0), None);
+
+        let t = t_0 + (DEBOUNCE_DURATION / 2);
+        assert_eq!(keypad.read(&t), None);
+
+        let t = t_0 + (DEBOUNCE_DURATION - Duration::from_millis(1));
+        assert_eq!(keypad.read(&t), None);
+
+        let t = t_0 + DEBOUNCE_DURATION;
+        assert_eq!(keypad.read(&t), None);
+
+        keypad.inner = inner_clr;
+        let t = t_0 + (DEBOUNCE_DURATION + Duration::from_millis(1));
+        assert_eq!(keypad.read(&t), Some(KeypadEvent::KeyPress('1')));
+
+        let t = t_0 + (DEBOUNCE_DURATION + Duration::from_millis(2));
+        assert_eq!(keypad.read(&t), None);
+    }
+
+    #[test_case]
+    fn long_press() {
+        trace!("long_press");
+
+        let r0 = MockPin::new(true);
+        let r1 = MockPin::new(false);
+        let r2 = MockPin::new(false);
+        let r3 = MockPin::new(false);
+        let c0 = MockPin::new(false);
+        let c1 = MockPin::new(false);
+        let c2 = MockPin::new(false);
+
+        let inner_set = keypad_new!(MockKeypadInner {
+            rows: (r0, r1, r2, r3,),
+            columns: (c0, c1, c2,),
+        });
+
+        let r0 = MockPin::new(false);
+        let r1 = MockPin::new(false);
+        let r2 = MockPin::new(false);
+        let r3 = MockPin::new(false);
+        let c0 = MockPin::new(false);
+        let c1 = MockPin::new(false);
+        let c2 = MockPin::new(false);
+
+        let inner_clr = keypad_new!(MockKeypadInner {
+            rows: (r0, r1, r2, r3,),
+            columns: (c0, c1, c2,),
+        });
+
+        let mut keypad = Keypad::new(inner_set);
+
+        let t_0 = Instant::from_millis(0);
+        assert_eq!(keypad.read(&t_0), None);
+
+        let t = t_0 + (DEBOUNCE_DURATION / 2);
+        assert_eq!(keypad.read(&t), None);
+
+        let t = t_0 + (DEBOUNCE_DURATION + Duration::from_millis(1));
+        assert_eq!(keypad.read(&t), None);
+
+        let t = t_0 + (LONGPRESS_DURATION / 2);
+        assert_eq!(keypad.read(&t), None);
+
+        keypad.inner = inner_clr;
+        let t = t_0 + LONGPRESS_DURATION;
+        assert_eq!(keypad.read(&t), Some(KeypadEvent::LongPress('1')));
+
+        let t = t_0 + (LONGPRESS_DURATION + Duration::from_millis(1));
         assert_eq!(keypad.read(&t), None);
     }
 }
