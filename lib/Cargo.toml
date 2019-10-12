@@ -44,8 +44,8 @@ features = []
 git = "https://github.com/jonlamb-gh/keypad.git"
 branch = "digital-v2"
 
-[dev-dependencies.raspi4_boot]
-path = "../deps/raspi4_boot/"
+[dev-dependencies.raspi4-boot]
+path = "../deps/raspi4-boot/"
 
 [dev-dependencies.embedded-hal]
 features = ["unproven"]

@@ -1,5 +1,5 @@
 [package]
-name = "raspi4_boot"
+name = "raspi4-boot"
 version = "0.1.0"
 authors = ["Jon Lamb"]
 edition = "2018"

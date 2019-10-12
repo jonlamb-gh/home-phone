@@ -1,3 +1,5 @@
+cargo-features = ["profile-overrides"]
+
 [package]
 name = "home-phone"
 version = "0.1.0"
@@ -14,8 +16,8 @@ members = [
 [dependencies.lib]
 path = "lib"
 
-[dependencies.raspi4_boot]
-path = "deps/raspi4_boot/"
+[dependencies.raspi4-boot]
+path = "deps/raspi4-boot/"
 
 [dependencies.log]
 version = "0.4"
@@ -39,6 +41,10 @@ path = "deps/test-runner"
 
 [dev-dependencies.qemu]
 path = "deps/qemu"
+
+# Things break if _boot_cores isn't optimized
+[profile.dev.overrides.raspi4-boot]
+opt-level = 3
 
 [package.metadata.cargo-xbuild]
 sysroot_path = "target/sysroot"
