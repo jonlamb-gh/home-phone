@@ -1,5 +1,4 @@
 use crate::keypad::KeypadEvent;
-use crate::phone_number::MAX_DIGITS;
 use heapless::consts::U128;
 use heapless::String;
 use log::debug;
@@ -58,14 +57,18 @@ impl EventBuffer {
         match self.mode {
             EventBufferMode::WaitForUserDial => match event {
                 KeypadEvent::KeyPress(c) => {
-                    self.buffer.push(c).unwrap_or(debug!("EventBuffer full"));
+                    self.buffer
+                        .push(c)
+                        .unwrap_or_else(|_| debug!("EventBuffer full"));
                     false
                 }
                 KeypadEvent::LongPress(c) => c == '#',
             },
             EventBufferMode::Dtmf => {
                 if let KeypadEvent::KeyPress(c) = event {
-                    self.buffer.push(c).unwrap_or(debug!("EventBuffer full"));
+                    self.buffer
+                        .push(c)
+                        .unwrap_or_else(|_| debug!("EventBuffer full"));
                     true
                 } else {
                     false
@@ -84,12 +87,90 @@ impl AsRef<str> for EventBuffer {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use log::{debug, trace};
+    use log::trace;
 
     #[test_case]
-    fn todo() {
-        trace!("todo");
-        debug!("todo");
+    fn clearing() {
+        trace!("clearing");
         let mut eb = EventBuffer::new();
+
+        let number = "22233334444";
+        for c in number.chars() {
+            assert_eq!(
+                false,
+                eb.push(EventBufferMode::WaitForUserDial, KeypadEvent::KeyPress(c))
+            );
+        }
+        assert_eq!(eb.buffer.len(), 11);
+        eb.clear();
+        assert_eq!(eb.buffer.len(), 0);
+
+        for c in number.chars() {
+            assert_eq!(
+                true,
+                eb.push(EventBufferMode::Dtmf, KeypadEvent::KeyPress(c))
+            );
+        }
+        assert_eq!(eb.buffer.len(), 11);
+        eb.clear();
+        assert_eq!(eb.buffer.len(), 0);
+    }
+
+    #[test_case]
+    fn mode_changes_clear() {
+        trace!("mode_changes_clear");
+        let mut eb = EventBuffer::new();
+        assert_eq!(eb.buffer.len(), 0);
+
+        for c in "12345".chars() {
+            assert_eq!(
+                false,
+                eb.push(EventBufferMode::WaitForUserDial, KeypadEvent::KeyPress(c))
+            );
+        }
+        assert_eq!(eb.buffer.len(), 5);
+        assert_eq!(eb.mode(), EventBufferMode::WaitForUserDial);
+        assert_eq!(eb.as_str(), "12345");
+
+        assert_eq!(
+            true,
+            eb.push(EventBufferMode::Dtmf, KeypadEvent::KeyPress('1'))
+        );
+        assert_eq!(eb.buffer.len(), 1);
+        assert_eq!(eb.mode(), EventBufferMode::Dtmf);
+        assert_eq!(eb.as_str(), "1");
+    }
+
+    #[test_case]
+    fn wait_for_user_dials() {
+        trace!("wait_for_user_dials");
+        let mut eb = EventBuffer::new();
+
+        let number = "22233334444";
+
+        for c in number.chars() {
+            assert_eq!(
+                false,
+                eb.push(EventBufferMode::WaitForUserDial, KeypadEvent::KeyPress(c))
+            );
+        }
+
+        // Long presses are ignored execpt '#'
+        assert_eq!(
+            false,
+            eb.push(
+                EventBufferMode::WaitForUserDial,
+                KeypadEvent::LongPress('1')
+            )
+        );
+
+        assert_eq!(
+            true,
+            eb.push(
+                EventBufferMode::WaitForUserDial,
+                KeypadEvent::LongPress('#')
+            )
+        );
+        assert_eq!(eb.as_str(), number);
     }
 }
