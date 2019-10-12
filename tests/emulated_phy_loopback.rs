@@ -24,7 +24,7 @@ use smoltcp::wire::{EthernetAddress, IpAddress, IpCidr};
 
 static GLOBAL_LOGGER: Logger = Logger::new();
 
-raspi3_boot::entry!(test_entry);
+raspi4_boot::entry!(test_entry);
 fn test_entry() -> ! {
     let mut mbox = Mailbox::new(MBOX::new());
     let clocks = Clocks::freeze(&mut mbox).unwrap();

@@ -23,7 +23,7 @@ use log::{info, LevelFilter};
 static GLOBAL_LOGGER: Logger = Logger::new();
 
 #[cfg(not(test))]
-raspi3_boot::entry!(main);
+raspi4_boot::entry!(main);
 fn main() -> ! {
     let mut mbox = Mailbox::new(MBOX::new());
     let clocks = Clocks::freeze(&mut mbox).unwrap();
@@ -60,7 +60,7 @@ mod tests {
     use log::trace;
 
     // TODO - move this into the test-runner crate?
-    raspi3_boot::entry!(test_entry);
+    raspi4_boot::entry!(test_entry);
     pub fn test_entry() -> ! {
         let mut mbox = Mailbox::new(MBOX::new());
         let clocks = Clocks::freeze(&mut mbox).unwrap();

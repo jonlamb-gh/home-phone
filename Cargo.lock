@@ -148,7 +148,7 @@ dependencies = [
  "lib",
  "log",
  "qemu",
- "raspi3_boot",
+ "raspi4_boot",
  "smoltcp",
  "test-runner",
 ]
@@ -175,7 +175,7 @@ dependencies = [
  "log",
  "nom",
  "qemu",
- "raspi3_boot",
+ "raspi4_boot",
  "smoltcp",
  "test-runner",
  "typenum",
@@ -239,9 +239,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e2a38df5b15c8d5c7e8654189744d8e396bddc18ad48041a500ce52d6948941f"
 
 [[package]]
-name = "raspi3_boot"
+name = "raspi4_boot"
 version = "0.1.0"
-source = "git+https://github.com/jonlamb-gh/rpi4-rust-workspace.git#89d7e198853574edf70f38f4f696f65ff8596ce9"
 dependencies = [
  "cortex-a",
  "r0",

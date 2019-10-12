@@ -32,7 +32,7 @@ mod tests {
     static GLOBAL_LOGGER: Logger = Logger::new();
 
     // TODO - move this into the test-runner crate?
-    raspi3_boot::entry!(test_entry);
+    raspi4_boot::entry!(test_entry);
     pub fn test_entry() -> ! {
         let mut mbox = Mailbox::new(MBOX::new());
         let clocks = Clocks::freeze(&mut mbox).unwrap();

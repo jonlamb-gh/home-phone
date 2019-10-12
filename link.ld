@@ -1,4 +1,4 @@
-/* Defined in the raspi3_boot crate */
+/* Defined in the raspi4_boot crate */
 ENTRY(_boot_cores);
 
 SECTIONS
