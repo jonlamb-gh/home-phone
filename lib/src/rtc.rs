@@ -66,11 +66,10 @@ impl fmt::Display for DateTime {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use log::{debug, trace};
+    use log::debug;
 
-    #[test_case]
+    #[test]
     fn datetime_formating() {
-        trace!("datetime_formating");
         let dt = DateTime(ds323x::DateTime {
             year: 0,
             month: 0,

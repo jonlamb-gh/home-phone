@@ -65,7 +65,7 @@ impl RowFormatter for IdleStateData {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use log::{debug, trace};
+    use log::debug;
 
     fn format_data<T: RowFormatter>(data: &T) {
         let mut storage = RowStorage::new();
@@ -78,16 +78,14 @@ mod tests {
         debug!("**********************");
     }
 
-    #[test_case]
+    #[test]
     fn default_formatter() {
-        trace!("default_formatter");
         let data = IdleStateData::default();
         format_data(&data);
     }
 
-    #[test_case]
+    #[test]
     fn missed_calls_formatter() {
-        trace!("missed_calls_formatter");
         let data = IdleStateData {
             missed_calls: 2,
             system_time: DateTime::default(),
@@ -96,9 +94,8 @@ mod tests {
         format_data(&data);
     }
 
-    #[test_case]
+    #[test]
     fn with_message_formatter() {
-        trace!("with_message_formatter");
         let data = IdleStateData {
             missed_calls: 0,
             system_time: DateTime::default(),

@@ -1,5 +1,5 @@
 use crate::display::{Row, RowFormatter, RowStorage};
-use crate::hal::time::Duration;
+use crate::hal::time::{DisplayableInstant, Duration};
 use crate::phone_number::PhoneNumber;
 use crate::rtc::DateTime;
 use core::fmt::{self, Write};
@@ -35,7 +35,7 @@ impl RowFormatter for InCallStateData {
                 write!(
                     storage,
                     "{: ^20}",
-                    format_args!("Duration {}", self.call_duration)
+                    format_args!("Duration {}", DisplayableInstant::from(self.call_duration))
                 )?;
             }
             Row::Two => {
@@ -53,7 +53,7 @@ impl RowFormatter for InCallStateData {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use log::{debug, trace};
+    use log::debug;
 
     fn format_data<T: RowFormatter>(data: &T) {
         let mut storage = RowStorage::new();
@@ -66,9 +66,8 @@ mod tests {
         debug!("**********************");
     }
 
-    #[test_case]
+    #[test]
     fn default_formatter() {
-        trace!("default_formatter");
         let data = InCallStateData::default();
         format_data(&data);
     }

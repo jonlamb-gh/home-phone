@@ -177,7 +177,6 @@ mod tests {
     use super::*;
     use core::marker::PhantomData;
     use embedded_hal::digital::v2::{InputPin, OutputPin};
-    use log::trace;
     use void::Void;
 
     struct MockPin<MODE> {
@@ -242,10 +241,8 @@ mod tests {
         }
     }
 
-    #[test_case]
+    #[test]
     fn construction() {
-        trace!("construction");
-
         let r0 = MockPin::new(false);
         let r1 = MockPin::new(false);
         let r2 = MockPin::new(false);
@@ -265,10 +262,8 @@ mod tests {
         assert_eq!(keypad.read(&t), None);
     }
 
-    #[test_case]
+    #[test]
     fn short_press() {
-        trace!("short_press");
-
         let r0 = MockPin::new(true);
         let r1 = MockPin::new(false);
         let r2 = MockPin::new(false);
@@ -317,10 +312,8 @@ mod tests {
         assert_eq!(keypad.read(&t), None);
     }
 
-    #[test_case]
+    #[test]
     fn long_press() {
-        trace!("long_press");
-
         let r0 = MockPin::new(true);
         let r1 = MockPin::new(false);
         let r2 = MockPin::new(false);
@@ -369,9 +362,8 @@ mod tests {
         assert_eq!(keypad.read(&t), None);
     }
 
-    #[test_case]
+    #[test]
     fn events() {
-        trace!("events");
         let short = KeypadEvent::KeyPress('C');
         let long = KeypadEvent::LongPress('C');
         assert_eq!(short.as_char(), long.as_char());

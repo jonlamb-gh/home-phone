@@ -136,19 +136,17 @@ impl fmt::Display for PhoneNumber {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use log::{debug, trace};
+    use log::debug;
 
-    #[test_case]
+    #[test]
     fn invalid_default() {
-        trace!("invalid_default");
         let num = PhoneNumber::default();
         assert_eq!(num, PhoneNumber::INVALID);
         assert_eq!(num.is_valid(), false);
     }
 
-    #[test_case]
+    #[test]
     fn new_number() {
-        trace!("new_number");
         let num = PhoneNumber::new(222, 333, 1234);
         debug!("Created {}", num);
         assert_eq!(num.is_valid(), true);
@@ -157,17 +155,15 @@ mod tests {
         assert_eq!(num.line_number(), 1234);
     }
 
-    #[test_case]
+    #[test]
     fn delimited_parse() {
-        trace!("delimited_parse");
         let num = PhoneNumber::new(333, 222, 1234);
         let res = PhoneNumber::try_from("333-222-1234");
         assert_eq!(res, Ok(num));
     }
 
-    #[test_case]
+    #[test]
     fn undelimited_parse() {
-        trace!("undelimited_parse");
         let num = PhoneNumber::new(123, 456, 1234);
         let res = PhoneNumber::try_from("1234561234");
         assert_eq!(res, Ok(num));

@@ -87,11 +87,9 @@ impl AsRef<str> for EventBuffer {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use log::trace;
 
-    #[test_case]
+    #[test]
     fn clearing() {
-        trace!("clearing");
         let mut eb = EventBuffer::new();
 
         let number = "22233334444";
@@ -116,9 +114,8 @@ mod tests {
         assert_eq!(eb.buffer.len(), 0);
     }
 
-    #[test_case]
+    #[test]
     fn mode_changes_clear() {
-        trace!("mode_changes_clear");
         let mut eb = EventBuffer::new();
         assert_eq!(eb.buffer.len(), 0);
 
@@ -141,9 +138,8 @@ mod tests {
         assert_eq!(eb.as_str(), "1");
     }
 
-    #[test_case]
+    #[test]
     fn wait_for_user_dials() {
-        trace!("wait_for_user_dials");
         let mut eb = EventBuffer::new();
 
         let number = "22233334444";

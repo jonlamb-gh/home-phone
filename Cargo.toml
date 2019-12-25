@@ -1,10 +1,13 @@
-cargo-features = ["profile-overrides"]
-
 [package]
 name = "home-phone"
 version = "0.1.0"
 authors = ["Jon Lamb"]
 edition = "2018"
+
+[profile.release]
+codegen-units = 1 # better optimizations
+debug = true # symbols are nice and they don't increase the size on Flash
+lto = true # better optimizations
 
 # Using a workspace layout to make it easier
 # to get integration tests working
@@ -13,11 +16,12 @@ members = [
   "lib",
 ]
 
+[dependencies]
+cortex-m = "0.6"
+cortex-m-rt = "0.6"
+
 [dependencies.lib]
 path = "lib"
-
-[dependencies.raspi4-boot]
-path = "deps/raspi4-boot/"
 
 [dependencies.log]
 version = "0.4"
@@ -35,16 +39,3 @@ features = [
     "log",
     "verbose"
 ]
-
-[dev-dependencies.test-runner]
-path = "deps/test-runner"
-
-[dev-dependencies.qemu]
-path = "deps/qemu"
-
-# Things break if _boot_cores isn't optimized
-[profile.dev.overrides.raspi4-boot]
-opt-level = 3
-
-[package.metadata.cargo-xbuild]
-sysroot_path = "target/sysroot"

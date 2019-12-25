@@ -45,7 +45,7 @@ impl RowFormatter for CallPendingStateData {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use log::{debug, trace};
+    use log::debug;
 
     fn format_data<T: RowFormatter>(data: &T) {
         let mut storage = RowStorage::new();
@@ -58,9 +58,8 @@ mod tests {
         debug!("**********************");
     }
 
-    #[test_case]
+    #[test]
     fn default_formatter() {
-        trace!("default_formatter");
         let data = CallPendingStateData::default();
         format_data(&data);
     }

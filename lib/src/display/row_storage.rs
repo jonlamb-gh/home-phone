@@ -6,12 +6,9 @@ pub type RowStorage = String<U21>;
 #[cfg(test)]
 mod tests {
     use super::*;
-    use log::trace;
 
-    #[test_case]
+    #[test]
     fn row_storage() {
-        trace!("row_storage");
-
         let rs = RowStorage::new();
         assert_eq!(rs.capacity(), 21);
         assert_eq!(rs.len(), 0);

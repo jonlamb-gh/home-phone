@@ -18,6 +18,10 @@ cargo objcopy -- -O binary target/$(TARGET)/release/home-path /tmp/home-phone.bi
 
 ## Simulating
 
+TODO
+
+https://github.com/xpack-dev-tools/qemu-arm-xpack/releases
+
 ```bash
 # For output on UART1
 qemu-system-aarch64 -M raspi4 -nographic -serial null -serial mon:stdio -kernel /path/to/binORelf

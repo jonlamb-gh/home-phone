@@ -2,6 +2,6 @@
 
 set -e
 
-cargo xtest -p home-phone -p lib
+cargo test --target x86_64-unknown-linux-gnu -p lib
 
 exit 0

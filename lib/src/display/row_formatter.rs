@@ -9,7 +9,7 @@ pub trait RowFormatter {
 mod tests {
     use super::*;
     use core::fmt::Write;
-    use log::{debug, trace};
+    use log::debug;
 
     struct TestData {
         r0: usize,
@@ -40,9 +40,8 @@ mod tests {
         }
     }
 
-    #[test_case]
+    #[test]
     fn row_formatter() {
-        trace!("row_formatter");
         let data = TestData {
             r0: 1234,
             r1: -23.34,

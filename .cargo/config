@@ -1,14 +1,10 @@
-[target.aarch64-unknown-none]
+[target.thumbv7em-none-eabihf]
+runner = "arm-none-eabi-gdb -q -x openocd.gdb"
 rustflags = [
-    "-C", "link-arg=-Tlink.ld",
-    "-C", "target-feature=-neon",
-    "-C", "target-feature=-fp-armv8",
-    "-C", "target-feature=+strict-align",
-    "-C", "target-cpu=cortex-a72",
+    # Link with lld
+    "-C", "link-arg=-Tlink.x",
+    "-C", "linker=rust-lld",
 ]
 
 [build]
-target = "aarch64-unknown-none"
-
-[target.'cfg(target_os = "none")']
-runner = "tools/qemu-runner"
+target = "thumbv7em-none-eabihf"
