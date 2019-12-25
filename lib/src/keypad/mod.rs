@@ -1,9 +1,10 @@
 mod event_buffer;
 
-use crate::hal::gpio::*;
+pub use crate::keypad::event_buffer::{EventBuffer, EventBufferMode};
+
+use crate::hal::gpio::{gpiob, Input, OpenDrain, Output, PullUp};
 use crate::hal::prelude::*;
 use crate::hal::time::{Duration, Instant};
-pub use crate::keypad::event_buffer::{EventBuffer, EventBufferMode};
 use keypad::{keypad_new, keypad_struct, KeypadInput};
 
 const DEBOUNCE_DURATION: Duration = Duration::from_millis(25);
@@ -33,31 +34,32 @@ pub trait KeypadDecomp {
 }
 
 // TODO - make generic over any GPIO pins
+// - need to pick real pins, these are just made up for now
 keypad_struct! {
     pub struct KeypadInner {
         rows: (
-          Pin5<Input<PullUp>>,
-          Pin6<Input<PullUp>>,
-          Pin13<Input<PullUp>>,
-          Pin19<Input<PullUp>>,
+          gpiob::PB0<Input<PullUp>>,
+          gpiob::PB1<Input<PullUp>>,
+          gpiob::PB2<Input<PullUp>>,
+          gpiob::PB3<Input<PullUp>>,
         ),
         columns: (
-            Pin17<Output<PushPull>>,
-            Pin27<Output<PushPull>>,
-            Pin22<Output<PushPull>>,
+            gpiob::PB4<Output<OpenDrain>>,
+            gpiob::PB5<Output<OpenDrain>>,
+            gpiob::PB6<Output<OpenDrain>>,
         ),
     }
 }
 
 impl KeypadInner {
     pub fn new(
-        r0: Pin5<Input<PullUp>>,
-        r1: Pin6<Input<PullUp>>,
-        r2: Pin13<Input<PullUp>>,
-        r3: Pin19<Input<PullUp>>,
-        c0: Pin17<Output<PushPull>>,
-        c1: Pin27<Output<PushPull>>,
-        c2: Pin22<Output<PushPull>>,
+        r0: gpiob::PB0<Input<PullUp>>,
+        r1: gpiob::PB1<Input<PullUp>>,
+        r2: gpiob::PB2<Input<PullUp>>,
+        r3: gpiob::PB3<Input<PullUp>>,
+        c0: gpiob::PB4<Output<OpenDrain>>,
+        c1: gpiob::PB5<Output<OpenDrain>>,
+        c2: gpiob::PB6<Output<OpenDrain>>,
     ) -> Self {
         keypad_new!(KeypadInner {
             rows: (r0, r1, r2, r3,),
@@ -133,7 +135,7 @@ impl KeyState {
             key,
             state: false,
             prev_pressed: false,
-            last_db: Instant { millis: 0 },
+            last_db: Instant::new(0, 0),
         }
     }
 
@@ -175,9 +177,9 @@ impl KeyState {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use core::convert::Infallible;
     use core::marker::PhantomData;
     use embedded_hal::digital::v2::{InputPin, OutputPin};
-    use void::Void;
 
     struct MockPin<MODE> {
         is_low: bool,
@@ -194,7 +196,7 @@ mod tests {
     }
 
     impl<MODE> InputPin for MockPin<Input<MODE>> {
-        type Error = Void;
+        type Error = Infallible;
 
         fn is_high(&self) -> Result<bool, Self::Error> {
             self.is_low().map(|b| !b)
@@ -206,7 +208,7 @@ mod tests {
     }
 
     impl<MODE> OutputPin for MockPin<Output<MODE>> {
-        type Error = Void;
+        type Error = Infallible;
 
         fn set_high(&mut self) -> Result<(), Self::Error> {
             self.is_low = false;
@@ -228,9 +230,9 @@ mod tests {
               MockPin<Input<PullUp>>,
             ),
             columns: (
-                MockPin<Output<PushPull>>,
-                MockPin<Output<PushPull>>,
-                MockPin<Output<PushPull>>,
+                MockPin<Output<OpenDrain>>,
+                MockPin<Output<OpenDrain>>,
+                MockPin<Output<OpenDrain>>,
             ),
         }
     }

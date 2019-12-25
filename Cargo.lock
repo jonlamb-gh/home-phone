@@ -151,10 +151,9 @@ dependencies = [
 [[package]]
 name = "keypad"
 version = "0.1.4"
-source = "git+https://github.com/jonlamb-gh/keypad.git?branch=digital-v2#8d7b0efabef78709fc38d1c4b3d87bc34aea81a6"
+source = "git+https://github.com/jonlamb-gh/keypad.git?branch=digital-v2-infallible#93df3c9ba4ea3be26e55a56565d4de63fa9c7541"
 dependencies = [
  "embedded-hal 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "void 1.0.2 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -166,7 +165,7 @@ dependencies = [
  "ds323x 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "embedded-hal 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "heapless 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "keypad 0.1.4 (git+https://github.com/jonlamb-gh/keypad.git?branch=digital-v2)",
+ "keypad 0.1.4 (git+https://github.com/jonlamb-gh/keypad.git?branch=digital-v2-infallible)",
  "log 0.4.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "nom 5.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "smoltcp 0.5.0 (git+https://github.com/m-labs/smoltcp.git)",
@@ -357,7 +356,7 @@ dependencies = [
 "checksum generic-array 0.13.2 (registry+https://github.com/rust-lang/crates.io-index)" = "0ed1e761351b56f54eb9dcd0cfaca9fd0daecf93918e1cfc01c8a3d26ee7adcd"
 "checksum hash32 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "d4041af86e63ac4298ce40e5cca669066e75b6f1aa3390fe2561ffa5e1d9f4cc"
 "checksum heapless 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)" = "f339aa7d51777fc0af6aa7cbeb277dfc6e6c029cbdeda48d0fbb92c2337f0e69"
-"checksum keypad 0.1.4 (git+https://github.com/jonlamb-gh/keypad.git?branch=digital-v2)" = "<none>"
+"checksum keypad 0.1.4 (git+https://github.com/jonlamb-gh/keypad.git?branch=digital-v2-infallible)" = "<none>"
 "checksum log 0.4.8 (registry+https://github.com/rust-lang/crates.io-index)" = "14b6052be84e6b71ab17edffc2eeabf5c2c3ae1fdb464aae35ac50c67a44e1f7"
 "checksum managed 0.7.1 (registry+https://github.com/rust-lang/crates.io-index)" = "fdcec5e97041c7f0f1c5b7d93f12e57293c831c646f4cc7a5db59460c7ea8de6"
 "checksum memchr 2.2.1 (registry+https://github.com/rust-lang/crates.io-index)" = "88579771288728879b57485cc7d6b07d648c9f0141eb955f8ab7f9d45394468e"
