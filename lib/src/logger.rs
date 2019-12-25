@@ -1,18 +1,10 @@
-// TODO
-// - expose this in deps/libs so the test framework uses it?
-
-use crate::hal::bcm2711::uart1::UART1;
-use crate::hal::gpio::{Alternate, Pin14, Pin15, AF5};
-use crate::hal::prelude::*;
-use crate::hal::serial::Serial;
+use crate::hal::{prelude::*, serial::Tx, stm32::USART3};
 use crate::sync::SingleCoreLock;
 use core::fmt::Write;
 use log::{Metadata, Record};
 
-type Inner = Serial<UART1, (Pin14<Alternate<AF5>>, Pin15<Alternate<AF5>>)>;
+type Inner = Tx<USART3>;
 
-// TODO
-// - make generic over UART0/1, requires Send for Pins/etc
 pub struct Logger {
     inner: SingleCoreLock<Option<Inner>>,
 }
