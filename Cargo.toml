@@ -4,34 +4,52 @@ version = "0.1.0"
 authors = ["Jon Lamb"]
 edition = "2018"
 
+[lib]
+name = "lib"
+path = "src/lib.rs"
+
+[[bin]]
+name = "bin"
+path = "src/main.rs"
+
 [profile.release]
 codegen-units = 1 # better optimizations
 debug = true # symbols are nice and they don't increase the size on Flash
 lto = true # better optimizations
 
-# Using a workspace layout to make it easier
-# to get integration tests working
-[workspace]
-members = [
-  "lib",
-]
-
 [dependencies]
+typenum = "1.10"
+heapless = "0.5"
+ds323x = "0.2"
 cortex-m = "0.6"
 cortex-m-rt = "0.6"
 
-[dependencies.lib]
-path = "lib"
+[dependencies.stm32f4xx-hal]
+default-features = false
+features = ["rt", "stm32f429"]
+git = "https://github.com/jonlamb-gh/stm32f4xx-hal.git"
+branch = "home-phone-changes"
 
 [dependencies.log]
 version = "0.4"
 default-features = false
+
+[dependencies.arrayvec]
+version = "0.4"
+default-features = false
+features = ["array-sizes-33-128"]
+
+#[dependencies.stm32-eth]
+#features = ["nucleo-f429zi", "smoltcp-phy"]
+#git = "https://github.com/jonlamb-gh/stm32-eth.git"
+#branch = "update-deps"
 
 [dependencies.smoltcp]
 git = "https://github.com/m-labs/smoltcp.git"
 branch = "master"
 default-features = false
 features = [
+    "ethernet",
     "proto-ipv4",
     "socket-icmp",
     "socket-udp",
@@ -39,3 +57,20 @@ features = [
     "log",
     "verbose"
 ]
+
+[dependencies.nom]
+version = "5.0"
+default-features = false
+features = []
+
+[dependencies.keypad]
+git = "https://github.com/jonlamb-gh/keypad.git"
+branch = "digital-v2-infallible"
+
+[dev-dependencies.embedded-hal]
+features = ["unproven"]
+version = "*"
+
+[dev-dependencies.void]
+default-features = false
+version = "*"

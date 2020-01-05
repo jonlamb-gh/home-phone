@@ -2,6 +2,6 @@
 
 set -e
 
-cargo test --target x86_64-unknown-linux-gnu -p lib
+cargo test --target x86_64-unknown-linux-gnu --lib
 
 exit 0
