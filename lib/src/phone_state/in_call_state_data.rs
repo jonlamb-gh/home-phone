@@ -1,7 +1,7 @@
 use crate::display::{Row, RowFormatter, RowStorage};
-use crate::hal::time::{DisplayableInstant, Duration};
 use crate::phone_number::PhoneNumber;
 use crate::rtc::DateTime;
+use crate::time::{DisplayableInstant, Duration};
 use core::fmt::{self, Write};
 
 #[derive(Debug, Clone, PartialEq)]

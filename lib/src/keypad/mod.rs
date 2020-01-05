@@ -4,7 +4,7 @@ pub use crate::keypad::event_buffer::{EventBuffer, EventBufferMode};
 
 use crate::hal::gpio::{gpiob, Input, OpenDrain, Output, PullUp};
 use crate::hal::prelude::*;
-use crate::hal::time::{Duration, Instant};
+use crate::time::{Duration, Instant};
 use keypad::{keypad_new, keypad_struct, KeypadInput};
 
 const DEBOUNCE_DURATION: Duration = Duration::from_millis(25);

@@ -10,3 +10,5 @@ pub mod phone_number;
 pub mod phone_state;
 pub mod rtc;
 pub mod sync;
+pub mod sys_clock;
+pub mod time;

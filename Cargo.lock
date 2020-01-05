@@ -283,7 +283,7 @@ dependencies = [
 [[package]]
 name = "stm32f4xx-hal"
 version = "0.6.0"
-source = "git+https://github.com/jonlamb-gh/stm32f4xx-hal.git?branch=home-phone-changes#31179b969c0fb6b01a268ed52aa610b8c5661d03"
+source = "git+https://github.com/jonlamb-gh/stm32f4xx-hal.git?branch=home-phone-changes#fb10640fbaaec42c4fc64b419fb93d6ca1521910"
 dependencies = [
  "bare-metal 0.2.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "cast 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)",
