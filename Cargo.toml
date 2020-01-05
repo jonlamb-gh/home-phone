@@ -39,10 +39,10 @@ version = "0.4"
 default-features = false
 features = ["array-sizes-33-128"]
 
-#[dependencies.stm32-eth]
-#features = ["nucleo-f429zi", "smoltcp-phy"]
-#git = "https://github.com/jonlamb-gh/stm32-eth.git"
-#branch = "update-deps"
+[dependencies.stm32-eth]
+features = ["nucleo-f429zi", "smoltcp-phy"]
+git = "https://github.com/jonlamb-gh/stm32-eth.git"
+branch = "update-deps"
 
 [dependencies.smoltcp]
 git = "https://github.com/m-labs/smoltcp.git"
@@ -54,8 +54,8 @@ features = [
     "socket-icmp",
     "socket-udp",
     "socket-tcp",
-    "log",
-    "verbose"
+    #"log",
+    #"verbose"
 ]
 
 [dependencies.nom]
